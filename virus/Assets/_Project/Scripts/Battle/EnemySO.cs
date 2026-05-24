@@ -8,7 +8,7 @@ public class EnemySO : ScriptableObject
     public string enemyName;
 
     // 체력
-    public int hp;
+    public HpData hp;
 
     // 공격력
     public int attack;
