@@ -20,6 +20,9 @@ public class GameState
     // 샘플 보유량 (Wood/Fire/Earth/Metal/Water 순)
     public int[] sampleInventory = new int[5];
 
+    // 전투 스탯
+    public PlayerBattleData battle;
+
     // 백신 완성도 (0~100)
     public int vaccineProgress;
 
