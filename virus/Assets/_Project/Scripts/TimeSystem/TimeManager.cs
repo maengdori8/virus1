@@ -6,7 +6,7 @@ public class TimeManager : MonoBehaviour
     [Header("참조")]
     public TimeData timeData;
 
-    // 타임 턴 1 소모
+    // 타임 턴 1 감소. 0 되면 EndDay() 호출
     public void SpendTimeTurn()
     {
         timeData.timeTurn--;
@@ -17,7 +17,7 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    // 하루 종료
+    // timeTurn 초기화 + dayTurn 1 감소
     private void EndDay()
     {
         timeData.timeTurn = timeData.maxTimeTurn;

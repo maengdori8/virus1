@@ -15,14 +15,14 @@ public class BattleManager : MonoBehaviour
     private EnemySO currentEnemy;
     private int enemyHp;
 
-    // 전투 시작
+    // 적 SO를 받아 enemyHp에 복사. 원본 보존용
     public void StartBattle(EnemySO enemy)
     {
         currentEnemy = enemy;
         enemyHp = enemy.hp.max;
     }
 
-    // 플레이어 공격
+    // 공격력-방어력 계산 후 상성 배수 적용. 스태미나 1 소모
     public void PlayerAttack()
     {
         int damage = gameState.battle.attack - currentEnemy.defense;
@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
         EnemyAttack();
     }
 
-    // 적 공격
+    // PlayerAttack과 동일 구조. 적→플레이어 방향으로 데미지
     private void EnemyAttack()
     {
         int damage = currentEnemy.attack - gameState.battle.defense;
@@ -65,7 +65,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // 상성 (a가 b에게 강한가)
+    // 오행 상극 판별. 목→토→수→화→금→목 순환
     private bool IsStrong(ElementType a, ElementType b)
     {
         // 목→토, 토→수, 수→화, 화→금, 금→목

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("상태")]
     public GameState gameState;
 
-    // 하루 시작
+    // 물자 소비 → 체력 회복 → 게임오버/클리어 체크 순서로 실행
     public void StartDay()
     {
         supplyManager.ConsumeDaily();
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 체력 자연 회복
+    // dailyHeal만큼 회복. max 초과 시 max로 고정
     private void HealDaily()
     {
         gameState.hp.current += gameState.hp.dailyHeal;
@@ -41,14 +41,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 게임오버
+    // hp 0 이하 시 호출. 게임오버 처리 (임시)
     private void GameOver()
     {
         Debug.Log("게임오버");
         // 임시로 출력
     }
 
-    // 클리어
+    // 백신 100 이상 시 호출. 엔딩 처리 (임시)
     private void GameClear()
     {
         Debug.Log("백신 완성");

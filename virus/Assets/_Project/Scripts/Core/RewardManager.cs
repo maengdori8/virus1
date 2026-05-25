@@ -6,7 +6,7 @@ public class RewardManager : MonoBehaviour
     [Header("참조")]
     public GameState gameState;
 
-    // ActionData를 받아서 GameState에 적용
+    // ActionData의 변화량을 GameState에 전부 더함. +면 보상, -면 패널티
     public void Apply(ActionData reward)
     {
         gameState.hp.current += reward.hpChange;

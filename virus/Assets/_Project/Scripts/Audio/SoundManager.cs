@@ -30,7 +30,7 @@ public class SoundManager : MonoBehaviour
         bgmSource.loop = true;
     }
 
-    // 배경음 재생 (인덱스로 선택)
+    // bgmClips[index]를 스피커에 넣고 반복 재생
     public void PlayBGM(int index)
     {
         bgmSource.clip = bgmClips[index];
@@ -38,13 +38,13 @@ public class SoundManager : MonoBehaviour
         bgmSource.Play();
     }
 
-    // 배경음 정지
+    // 배경음 재생 중지
     public void StopBGM()
     {
         bgmSource.Stop();
     }
 
-    // 효과음 재생 (인덱스로 선택)
+    // sfxClips[index]를 한 번만 재생. 중첩 재생 가능
     public void PlaySFX(int index)
     {
         sfxSource.PlayOneShot(sfxClips[index], sfxVolume);

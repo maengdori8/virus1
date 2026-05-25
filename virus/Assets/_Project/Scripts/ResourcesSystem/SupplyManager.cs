@@ -7,7 +7,7 @@ public class SupplyManager : MonoBehaviour
     public SupplyData supplyData;
     public HpData hpData;
 
-    // 하루 시작 시 호출
+    // 물자에서 dailyCost 차감. 부족하면 부족분만큼 체력 깎음
     public void ConsumeDaily()
     {
         supplyData.current -= supplyData.dailyCost;
