@@ -4,9 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy", menuName = "Data/Enemy")]
 public class EnemySO : ScriptableObject
 {
+    [Header("기본 정보")]
     // 적 이름
     public string enemyName;
 
+    // 오행 속성
+    public ElementType element;
+
+    [Header("스탯")]
     // 체력
     public HpData hp;
 
@@ -15,7 +20,4 @@ public class EnemySO : ScriptableObject
 
     // 방어력
     public int defense;
-
-    // 오행 속성
-    public ElementType element;
 }

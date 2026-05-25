@@ -1,13 +1,17 @@
+using UnityEngine;
+
 // 선택지 실행 결과
 [System.Serializable]
 public class ActionData
 {
+    [Header("스탯 변화량")]
     // 체력 변화량
     public int hpChange;
 
     // 스태미나 변화량
     public int staminaChange;
 
+    [Header("자원 변화량")]
     // 물자 변화량
     public int suppliesChange;
 

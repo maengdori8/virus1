@@ -3,9 +3,11 @@ using UnityEngine;
 // 전투 관리
 public class BattleManager : MonoBehaviour
 {
+    [Header("참조")]
     public GameState gameState;
     public RewardManager rewardManager;
 
+    [Header("설정")]
     // 상성 배수 (기본 1.2, 버프로 추가 가능)
     public float elementBonus = 1.2f;
 

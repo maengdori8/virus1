@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Event", menuName = "Data/Event")]
 public class EventSO : ScriptableObject
 {
+    [Header("이벤트")]
     // 이벤트 설명
     public string description;
 

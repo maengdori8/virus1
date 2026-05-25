@@ -1,7 +1,10 @@
+using UnityEngine;
+
 // 체력 데이터
 [System.Serializable]
 public class HpData
 {
+    [Header("체력")]
     // 현재 체력
     public int current;
 

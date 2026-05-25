@@ -1,7 +1,10 @@
+using UnityEngine;
+
 // 플레이어 전투 데이터
 [System.Serializable]
 public class PlayerBattleData
 {
+    [Header("전투 스탯")]
     // 공격력
     public int attack;
 

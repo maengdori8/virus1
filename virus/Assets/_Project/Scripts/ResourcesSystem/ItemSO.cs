@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Data/Item")]
 public class ItemSO : ScriptableObject
 {
+    [Header("기본 정보")]
     // 아이템 이름
     public string itemName;
 
@@ -13,6 +14,7 @@ public class ItemSO : ScriptableObject
     // 설명
     public string description;
 
+    [Header("효과")]
     // 사용 효과
     public ActionData effect;
 }

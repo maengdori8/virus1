@@ -1,7 +1,10 @@
+using UnityEngine;
+
 // 시간 데이터
 [System.Serializable]
 public class TimeData
 {
+    [Header("시간")]
     // 남은 날 (0이면 게임오버)
     public int dayTurn;
 

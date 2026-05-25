@@ -3,6 +3,7 @@ using UnityEngine;
 // 물자 관리
 public class SupplyManager : MonoBehaviour
 {
+    [Header("참조")]
     public SupplyData supplyData;
     public HpData hpData;
 

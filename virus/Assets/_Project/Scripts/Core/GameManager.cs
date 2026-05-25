@@ -3,10 +3,12 @@ using UnityEngine;
 // 게임 루프 관리
 public class GameManager : MonoBehaviour
 {
+    [Header("참조")]
     public TimeManager timeManager;
     public SupplyManager supplyManager;
     public RewardManager rewardManager;
 
+    [Header("상태")]
     public GameState gameState;
 
     // 하루 시작
