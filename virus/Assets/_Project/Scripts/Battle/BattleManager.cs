@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // 전투 관리
@@ -15,11 +16,17 @@ public class BattleManager : MonoBehaviour
     private EnemySO currentEnemy;
     private int enemyHp;
 
-    // 적 SO를 받아 enemyHp에 복사. 원본 보존용
-    public void StartBattle(EnemySO enemy)
+    // 승리/패배 시 호출될 콜백
+    private Action onWin;
+    private Action onLose;
+
+    // 적 SO + 콜백을 받아 전투 시작. enemyHp에 복사
+    public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback)
     {
         currentEnemy = enemy;
         enemyHp = enemy.hp.max;
+        onWin = winCallback;
+        onLose = loseCallback;
     }
 
     // 공격력-방어력 계산 후 상성 배수 적용. 스태미나 1 소모
@@ -68,7 +75,6 @@ public class BattleManager : MonoBehaviour
     // 오행 상극 판별. 목→토→수→화→금→목 순환
     private bool IsStrong(ElementType a, ElementType b)
     {
-        // 목→토, 토→수, 수→화, 화→금, 금→목
         if (a == ElementType.Wood && b == ElementType.Earth) return true;
         if (a == ElementType.Earth && b == ElementType.Water) return true;
         if (a == ElementType.Water && b == ElementType.Fire) return true;
@@ -77,15 +83,19 @@ public class BattleManager : MonoBehaviour
         return false;
     }
 
-    // 승리
+    // 콜백 실행 후 초기화
     private void Win()
     {
-        Debug.Log("전투 승리");
+        onWin?.Invoke();
+        onWin = null;
+        onLose = null;
     }
 
-    // 패배
+    // 콜백 실행 후 초기화
     private void Lose()
     {
-        Debug.Log("전투 패배");
+        onLose?.Invoke();
+        onWin = null;
+        onLose = null;
     }
 }
