@@ -34,7 +34,7 @@ public class ResearchManager : MonoBehaviour
             gameState.sampleInventory[i] -= stage.sampleCost[i];
         }
 
-        battleManager.StartBattle(stage.enemies[0]);
+        battleManager.StartBattle(stage.enemies[0], OnStageWin, OnStageLose);
     }
 
     // 전투 승리 시 호출. 백신 진행도 획득

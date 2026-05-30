@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // 게임 루프 관리
@@ -7,10 +8,13 @@ public class GameManager : MonoBehaviour
     public TimeManager timeManager;
     public SupplyManager supplyManager;
     public RewardManager rewardManager;
+    public ExplorationManager explorationManager;
+    public ResearchManager researchManager;
 
     [Header("상태")]
     public GameState gameState;
 
+    private bool isNight = false;
     // 물자 소비 → 체력 회복 → 게임오버/클리어 체크 순서로 실행
     public void StartDay()
     {
@@ -28,6 +32,21 @@ public class GameManager : MonoBehaviour
             GameClear();
             return;
         }
+    }
+    
+
+    // 밤 진입, 탐가 가능 상태로 전환
+    public void StartNight()
+    {
+        isNight = true;
+    }
+
+
+    // 탐사 끝나고 낮으로 복귀, 연구 가능 상태
+    public void EndNight()
+    {
+        isNight = false;
+        timeManager.SpendTimeTurn();
     }
 
     // dailyHeal만큼 회복. max 초과 시 max로 고정
