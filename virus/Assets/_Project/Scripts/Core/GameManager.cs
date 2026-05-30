@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
             return;
         }
     }
-    
+   
 
     // 밤 진입, 탐가 가능 상태로 전환
     public void StartNight()
