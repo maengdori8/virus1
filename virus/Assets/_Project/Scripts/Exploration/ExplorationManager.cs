@@ -7,6 +7,7 @@ public class ExplorationManager : MonoBehaviour
     public GameState gameState;
     public RewardManager rewardManager;
     public TimeManager timeManager;
+    public BattleManager battleManager;
 
     // 현재 탐사 중인 지역
     private ExplorationSO currentArea;
@@ -31,6 +32,25 @@ public class ExplorationManager : MonoBehaviour
         gameState.stamina.current -= choice.staminaCost;
         rewardManager.Apply(choice.result);
     }
+    // 적이랑 전투 시작, 콜백으로 승패 처리
+    public void StartBattle(EnemySO ememy)
+    {
+        battleManager.StartBattle(ememy, OnExeploreWin, OnExeploreLose);
+    }
+
+    // 탐사 전투 승리 / 탐사 이어서 진행
+    private void OnExeploreWin()
+    {
+        Debug.Log("탐사 전투 승리");
+    }
+
+    // 탐사 전투 패배. 강제복귀
+    private void OnExeploreLose()
+    {
+        Debug.Log("탐사 전투 패배 - 강제복귀");
+        Return();
+    }
+
 
     // 턴 1 소모 + 현재 지역 초기화. 탐사 종료
     public void Return()
