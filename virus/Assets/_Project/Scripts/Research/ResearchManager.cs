@@ -14,7 +14,7 @@ public class ResearchManager : MonoBehaviour
     // 샘플 충분한지 확인. sampleCost와 보유량 비교
     public bool CanStartStage(ResearchStageSO stage)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             if (gameState.sampleInventory[i] < stage.sampleCost[i])
                 return false;
@@ -29,7 +29,7 @@ public class ResearchManager : MonoBehaviour
 
         currentStage = stage;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             gameState.sampleInventory[i] -= stage.sampleCost[i];
         }

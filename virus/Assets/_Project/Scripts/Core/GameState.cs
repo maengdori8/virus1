@@ -21,8 +21,8 @@ public class GameState
     // 물자
     public SupplyData supply;
 
-    // 샘플 보유량 (Wood/Fire/Earth/Metal/Water 순)
-    public int[] sampleInventory = new int[5];
+    // 샘플 보유량 (바다/산/도시 순)
+    public int[] sampleInventory = new int[3];
 
     [Header("전투")]
     // 전투 스탯

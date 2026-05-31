@@ -15,7 +15,7 @@ public class RewardManager : MonoBehaviour
         gameState.vaccineProgress += reward.vaccineChange;
 
         // 보유 샘플 더하거나 차감
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             gameState.sampleInventory[i] += reward.sampleChange[i];
         }
