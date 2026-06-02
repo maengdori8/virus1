@@ -27,6 +27,7 @@ public class BattleManager : MonoBehaviour
         enemyHp = enemy.hp.max;
         onWin = winCallback;
         onLose = loseCallback;
+        Debug.Log($"=== 전투 시작: {enemy.enemyName} ({enemy.element}) HP: {enemyHp} ===");
     }
 
     // 공격력-방어력 계산 후 상성 배수 적용. 스태미나 1 소모
@@ -34,6 +35,10 @@ public class BattleManager : MonoBehaviour
     {
         int damage = gameState.battle.attack - currentEnemy.defense;
         if (damage < 1) damage = 1;
+
+        bool strong = IsStrong(gameState.battle.element, currentEnemy.element);
+        if (strong) damage = (int)(damage * elementBonus);
+
 
         // 오행 상성 추가 댐지
         if (IsStrong(gameState.battle.element, currentEnemy.element))
@@ -43,6 +48,8 @@ public class BattleManager : MonoBehaviour
 
         enemyHp -= damage;
         gameState.stamina.current--;
+
+        Debug.Log($"[플레이어 공격] {damage} 데미지{(strong ? " *상성유리" : "")}{enemyHp}/{currentEnemy.hp.max} 스테미나: {gameState.stamina.current}");
 
         if (enemyHp <= 0)
         {
@@ -58,11 +65,15 @@ public class BattleManager : MonoBehaviour
     {
         int damage = currentEnemy.attack - gameState.battle.defense;
         if (damage < 1) damage = 1;
+        bool strong = IsStrong(currentEnemy.element, gameState.battle.element);
 
-        if (IsStrong(currentEnemy.element, gameState.battle.element))
+
+        if (IsStrong(currentEnemy.element, gameState.battle.element)) 
         {
             damage = (int)(damage * elementBonus);
         }
+
+        Debug.Log($"[적 반격 {damage} 데미지 {(strong ? " *상성불리" : "")}{gameState.hp.current}/{gameState.hp.max}");
 
         gameState.hp.current -= damage;
 
@@ -86,6 +97,7 @@ public class BattleManager : MonoBehaviour
     // 콜백 실행 후 초기화
     private void Win()
     {
+        Debug.Log("=== 승리 ===");
         onWin?.Invoke();
         onWin = null;
         onLose = null;
@@ -94,6 +106,7 @@ public class BattleManager : MonoBehaviour
     // 콜백 실행 후 초기화
     private void Lose()
     {
+        Debug.Log("===패배===");
         onLose?.Invoke();
         onWin = null;
         onLose = null;
