@@ -3,6 +3,8 @@ using UnityEngine;
 // 사운드 관리
 public class SoundManager : MonoBehaviour
 {
+    public static SoundManager instance;
+
     [Header("배경음")]
     // 배경음 목록
     public AudioClip[] bgmClips;
@@ -25,6 +27,13 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
+        if(instance != null) { 
+            Destroy(gameObject); 
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         bgmSource = gameObject.AddComponent<AudioSource>();
         sfxSource = gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;

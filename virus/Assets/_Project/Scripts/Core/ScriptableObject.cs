@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class GameState
+[CreateAssetMenu(fileName = "GameState", menuName = "Data/GameState")]
+public class GameState : ScriptableObject
 {
     [Header("시간")]
     // 날짜 턴
