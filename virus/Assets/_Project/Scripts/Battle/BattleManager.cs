@@ -40,12 +40,6 @@ public class BattleManager : MonoBehaviour
         if (strong) damage = (int)(damage * elementBonus);
 
 
-        // 오행 상성 추가 댐지
-        if (IsStrong(gameState.battle.element, currentEnemy.element))
-        {
-            damage = (int)(damage * elementBonus);
-        }
-
         enemyHp -= damage;
         gameState.stamina.current--;
 
