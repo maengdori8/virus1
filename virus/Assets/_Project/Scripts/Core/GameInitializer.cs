@@ -46,7 +46,7 @@ public class GameInitializer : MonoBehaviour
         gameState.battle.element = startElement;
 
         gameState.vaccineProgress = 0;
-        gameState.sampleInventory = new int[5];
+        gameState.sampleInventory = new int[3];
 
         timeData.dayTurn = startDayTurn;
         timeData.timeTurn = startMaxTimeTurn;

@@ -15,8 +15,8 @@ public class ActionData
     // 물자 변화량
     public int suppliesChange;
 
-    // 샘플 변화량 (Wood/Fire/Earth/Metal/Water 순)
-    public int[] sampleChange = new int[5];
+    // 샘플 변화량 (바다/산/도시 순)
+    public int[] sampleChange = new int[3];
 
     // 백신 진행도 변화량
     public int vaccineChange;

@@ -8,8 +8,8 @@ public class ResearchStageSO : ScriptableObject
     // 단계 (1~3)
     public int stage;
 
-    // 필요 샘플 (Wood/Fire/Earth/Metal/Water 순)
-    public int[] sampleCost = new int[5];
+    // 필요 샘플 (바다/산/도시 순)
+    public int[] sampleCost = new int[3];
 
     [Header("전투")]
     // 등장 적
