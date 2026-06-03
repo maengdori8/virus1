@@ -10,4 +10,10 @@ public class SupplyData
 
     // 일일 소비량
     public int dailyCost;
+
+    // 물자가 음수가 되지 않도록 고정
+    public void Clamp()
+    {
+        current = Mathf.Max(current, 0);
+    }
 }

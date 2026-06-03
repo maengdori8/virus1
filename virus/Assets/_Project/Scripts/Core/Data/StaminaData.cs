@@ -10,4 +10,10 @@ public class StaminaData
 
     // 최대 스태미나
     public int max;
+
+    // 현재 스태미나를 0~max 범위로 고정
+    public void Clamp()
+    {
+        current = Mathf.Clamp(current, 0, max);
+    }
 }

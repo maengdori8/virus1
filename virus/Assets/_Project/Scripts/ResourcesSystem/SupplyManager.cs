@@ -17,5 +17,8 @@ public class SupplyManager : MonoBehaviour
             gameState.hp.current += gameState.supply.current;
             gameState.supply.current = 0;
         }
+
+        // 체력 음수 방지
+        gameState.hp.Clamp();
     }
 }

@@ -19,6 +19,7 @@ public class ExplorationManager : MonoBehaviour
     {
         currentArea = area;
         gameState.stamina.current = area.staminaLimit;
+        gameState.stamina.Clamp();
         staminaManager.ResetPenalty();
     }
 

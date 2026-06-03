@@ -13,4 +13,10 @@ public class HpData
 
     // 일일 자연 회복량
     public int dailyHeal;
+
+    // 현재 체력을 0~max 범위로 고정
+    public void Clamp()
+    {
+        current = Mathf.Clamp(current, 0, max);
+    }
 }

@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleTestRunner : MonoBehaviour
 {
     public BattleManager bm;
     public EnemySO enemy;
-    private void Start()
+
+    void Start()
     {
-        bm.StartBattle(enemy, () => Debug.Log("½Â¸®"), () => Debug.Log("ÆÐ¹è"));
+        bm.StartBattle(enemy, () => Debug.Log("ìŠ¹ë¦¬"), () => Debug.Log("íŒ¨ë°°"));
     }
+
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space))

@@ -25,12 +25,29 @@ public class GameManager : MonoBehaviour
 
     private bool isNight = false;
 
-    // 게임 시작 버튼에 연결. 초기화 → 랭킹 불러오기 → 첫 하루 시작
+    private const string SaveKey = "GameSave";
+
+    // 게임 시작 버튼에 연결. 초기화 → 연구진행 리셋 → 랭킹 불러오기 → 첫 하루
     public void StartGame()
     {
         gameInitializer.Init();
+        researchManager.ResetProgress();
         rankManager.Load();
         StartDay();
+    }
+
+    // 현재 진행 상태를 JSON으로 저장
+    public void SaveGame()
+    {
+        PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(gameState));
+        PlayerPrefs.Save();
+    }
+
+    // 저장된 진행 상태를 GameState 에셋에 덮어쓰기
+    public void LoadGame()
+    {
+        if (!PlayerPrefs.HasKey(SaveKey)) return;
+        JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SaveKey), gameState);
     }
 
     // 물자 소비 → 체력 회복 → 게임오버/클리어 체크
@@ -41,7 +58,7 @@ public class GameManager : MonoBehaviour
 
         if (gameState.hp.current <= 0)
         {
-            GameOver();
+            GameOver("체력 소진");
             return;
         }
 
@@ -66,28 +83,24 @@ public class GameManager : MonoBehaviour
         // 남은 날이 다 되면 게임오버 (보스 못 잡음)
         if (gameState.time.dayTurn <= 0)
         {
-            GameOver();
+            GameOver("기간 초과");
             return;
         }
 
         StartDay();
     }
 
-    // dailyHeal만큼 회복. max 초과 시 max로 고정
+    // dailyHeal만큼 회복 후 0~max 범위로 고정
     private void HealDaily()
     {
         gameState.hp.current += gameState.hp.dailyHeal;
-
-        if (gameState.hp.current > gameState.hp.max)
-        {
-            gameState.hp.current = gameState.hp.max;
-        }
+        gameState.hp.Clamp();
     }
 
-    // hp 0 이하 시 호출. 게임오버 처리 (임시)
-    private void GameOver()
+    // 게임오버 처리. 사유(체력 소진/기간 초과)를 받아 구분
+    private void GameOver(string reason)
     {
-        Debug.Log("게임오버");
+        Debug.Log($"게임오버 - {reason}");
     }
 
     // 백신 100 도달 시 즉시 클리어 (연구 승리 직후 호출)
