@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public ExplorationManager explorationManager;
     public ResearchManager researchManager;
     public RankManager rankManager;
+    public GameInitializer gameInitializer;
 
     [Header("클리어 UI")]
     // 이름 입력 패널
@@ -23,6 +24,14 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
 
     private bool isNight = false;
+
+    // 게임 시작 버튼에 연결. 초기화 → 랭킹 불러오기 → 첫 하루 시작
+    public void StartGame()
+    {
+        gameInitializer.Init();
+        rankManager.Load();
+        StartDay();
+    }
 
     // 물자 소비 → 체력 회복 → 게임오버/클리어 체크
     public void StartDay()
@@ -49,14 +58,13 @@ public class GameManager : MonoBehaviour
         isNight = true;
     }
 
-    // 탐사 끝나고 낮으로 복귀. 턴 소모 후 다음 날로
+    // 탐사 끝나고 낮으로 복귀. 다음 날로 (턴 소모는 ExplorationManager.Return이 담당)
     public void EndNight()
     {
         isNight = false;
-        timeManager.SpendTimeTurn();
 
         // 남은 날이 다 되면 게임오버 (보스 못 잡음)
-        if (timeManager.timeData.dayTurn <= 0)
+        if (gameState.time.dayTurn <= 0)
         {
             GameOver();
             return;
@@ -80,6 +88,13 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("게임오버");
+    }
+
+    // 백신 100 도달 시 즉시 클리어 (연구 승리 직후 호출)
+    public void CheckClear()
+    {
+        if (gameState.vaccineProgress >= 100)
+            GameClear();
     }
 
     // 백신 100 이상 시 호출. 이름 입력 패널 띄움

@@ -11,6 +11,9 @@ public class GameState : ScriptableObject
     // 밤 턴 (0이면 낮)
     public int nightTurn;
 
+    // 시간 데이터 (남은 날/하루 턴)
+    public TimeData time = new TimeData();
+
     [Header("자원")]
     // 체력
     public HpData hp;

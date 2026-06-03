@@ -9,6 +9,7 @@ public class ExplorationManager : MonoBehaviour
     public TimeManager timeManager;
     public BattleManager battleManager;
     public StaminaManager staminaManager;
+    public GameManager gameManager;
 
     // 현재 탐사 중인 지역
     private ExplorationSO currentArea;
@@ -28,10 +29,10 @@ public class ExplorationManager : MonoBehaviour
         return currentArea.events[index];
     }
 
-    // 스태미나 차감 후 결과(ActionData)를 RewardManager에 넘김
+    // 스태미나 차감(Spend 통해) 후 결과를 RewardManager에 넘김
     public void SelectChoice(ChoiceData choice)
     {
-        gameState.stamina.current -= choice.staminaCost;
+        staminaManager.Spend(choice.staminaCost);
         rewardManager.Apply(choice.result);
     }
     // 적이랑 전투 시작, 콜백으로 승패 처리
@@ -54,10 +55,11 @@ public class ExplorationManager : MonoBehaviour
     }
 
 
-    // 턴 1 소모 + 현재 지역 초기화. 탐사 종료
+    // 턴 1 소모 + 지역 초기화 + 낮으로 복귀
     public void Return()
     {
         timeManager.SpendTimeTurn();
         currentArea = null;
+        gameManager.EndNight();
     }
 }

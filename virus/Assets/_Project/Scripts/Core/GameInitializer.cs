@@ -5,7 +5,6 @@ public class GameInitializer : MonoBehaviour
 {
     [Header("참조")]
     public GameState gameState;
-    public TimeData timeData;
 
     [Header("체력 초기값")]
     public int startHp = 100;
@@ -48,8 +47,8 @@ public class GameInitializer : MonoBehaviour
         gameState.vaccineProgress = 0;
         gameState.sampleInventory = new int[3];
 
-        timeData.dayTurn = startDayTurn;
-        timeData.timeTurn = startMaxTimeTurn;
-        timeData.maxTimeTurn = startMaxTimeTurn;
+        gameState.time.dayTurn = startDayTurn;
+        gameState.time.timeTurn = startMaxTimeTurn;
+        gameState.time.maxTimeTurn = startMaxTimeTurn;
     }
 }

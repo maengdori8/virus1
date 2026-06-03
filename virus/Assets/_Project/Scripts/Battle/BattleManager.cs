@@ -7,6 +7,7 @@ public class BattleManager : MonoBehaviour
     [Header("참조")]
     public GameState gameState;
     public RewardManager rewardManager;
+    public StaminaManager staminaManager;
 
     [Header("설정")]
     // 상성 배수 (기본 1.2, 버프로 추가 가능)
@@ -41,7 +42,7 @@ public class BattleManager : MonoBehaviour
 
 
         enemyHp -= damage;
-        gameState.stamina.current--;
+        staminaManager.Spend(1);
 
         Debug.Log($"[플레이어 공격] {damage} 데미지{(strong ? " *상성유리" : "")}{enemyHp}/{currentEnemy.hp.max} 스테미나: {gameState.stamina.current}");
 

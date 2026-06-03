@@ -41,7 +41,10 @@ public class RankManager : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey(SaveKey)) return;
         RankList wrapper = JsonUtility.FromJson<RankList>(PlayerPrefs.GetString(SaveKey));
-        rankList = wrapper.list;
+
+        // 데이터가 깨졌으면 빈 리스트 유지
+        if (wrapper != null && wrapper.list != null)
+            rankList = wrapper.list;
     }
 
     // rankPanel 활성화/비활성화 

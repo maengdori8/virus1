@@ -4,15 +4,14 @@ using UnityEngine;
 public class TimeManager : MonoBehaviour
 {
     [Header("참조")]
-    public TimeData timeData;
     public GameState gameState;
 
     // 타임 턴 1 감소. 0 되면 EndDay() 호출
     public void SpendTimeTurn()
     {
-        timeData.timeTurn--;
+        gameState.time.timeTurn--;
 
-        if (timeData.timeTurn <= 0)
+        if (gameState.time.timeTurn <= 0)
         {
             EndDay();
         }
@@ -21,8 +20,8 @@ public class TimeManager : MonoBehaviour
     // timeTurn 초기화 + dayTurn 감소 + 누적 일수 증가
     private void EndDay()
     {
-        timeData.timeTurn = timeData.maxTimeTurn;
-        timeData.dayTurn--;
+        gameState.time.timeTurn = gameState.time.maxTimeTurn;
+        gameState.time.dayTurn--;
         gameState.currentDay++;
     }
 }
