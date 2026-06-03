@@ -49,11 +49,20 @@ public class GameManager : MonoBehaviour
         isNight = true;
     }
 
-    // 탐사 끝나고 낮으로 복귀, 연구 가능 상태
+    // 탐사 끝나고 낮으로 복귀. 턴 소모 후 다음 날로
     public void EndNight()
     {
         isNight = false;
         timeManager.SpendTimeTurn();
+
+        // 남은 날이 다 되면 게임오버 (보스 못 잡음)
+        if (timeManager.timeData.dayTurn <= 0)
+        {
+            GameOver();
+            return;
+        }
+
+        StartDay();
     }
 
     // dailyHeal만큼 회복. max 초과 시 max로 고정
