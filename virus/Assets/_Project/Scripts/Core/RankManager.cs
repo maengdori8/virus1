@@ -31,6 +31,7 @@ public class RankManager : MonoBehaviour
     public void Save()
     {
         RankList wrapper = new RankList();
+        wrapper.list = rankList; // 리스트를 상자에 담음
         PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(wrapper)); // wrapper를 json 텍스트로 바꿈, 그 글자를 SaveKey("RankData)에 넣음
         PlayerPrefs.Save();
     }
