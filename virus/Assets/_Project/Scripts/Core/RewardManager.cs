@@ -14,6 +14,9 @@ public class RewardManager : MonoBehaviour
         gameState.supply.current += reward.suppliesChange;
         gameState.vaccineProgress += reward.vaccineChange;
 
+        // 백신 진행도 0~100 범위로 고정
+        gameState.vaccineProgress = Mathf.Clamp(gameState.vaccineProgress, 0, 100);
+
         // 보유 샘플 더하거나 차감
         for (int i = 0; i < 3; i++)
         {

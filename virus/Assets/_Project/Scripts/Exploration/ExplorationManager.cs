@@ -8,15 +8,17 @@ public class ExplorationManager : MonoBehaviour
     public RewardManager rewardManager;
     public TimeManager timeManager;
     public BattleManager battleManager;
+    public StaminaManager staminaManager;
 
     // 현재 탐사 중인 지역
     private ExplorationSO currentArea;
 
-    // 지역 저장 + 스태미나를 해당 지역 한도로 세팅
+    // 지역 저장 + 스태미나 한도 세팅 + 패널티 리셋
     public void StartExploration(ExplorationSO area)
     {
         currentArea = area;
         gameState.stamina.current = area.staminaLimit;
+        staminaManager.ResetPenalty();
     }
 
     // 현재 지역의 이벤트 중 하나를 랜덤으로 반환
