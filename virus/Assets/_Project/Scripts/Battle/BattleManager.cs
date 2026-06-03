@@ -60,12 +60,7 @@ public class BattleManager : MonoBehaviour
         int damage = currentEnemy.attack - gameState.battle.defense;
         if (damage < 1) damage = 1;
         bool strong = IsStrong(currentEnemy.element, gameState.battle.element);
-
-
-        if (IsStrong(currentEnemy.element, gameState.battle.element)) 
-        {
-            damage = (int)(damage * elementBonus);
-        }
+        if (strong) damage = (int)(damage * elementBonus);
 
         Debug.Log($"[적 반격 {damage} 데미지 {(strong ? " *상성불리" : "")}{gameState.hp.current}/{gameState.hp.max}");
 
