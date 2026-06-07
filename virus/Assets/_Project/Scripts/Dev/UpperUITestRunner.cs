@@ -11,7 +11,7 @@ public class UpperUITestRunner : MonoBehaviour
         gameState.supply.current = 77;
         gameState.sampleInventory = new[] { 1, 2, 3 };
 
-        Debug.Log("[UpperUITest] Started. Press S to add supply, Alpha1-3 to add samples.");
+        Debug.Log("[UpperUITest] Started. Press S to add supply, 1 to 3 to add samples.");
     }
 
     private void Update()

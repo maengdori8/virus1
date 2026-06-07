@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
     [Header("상태")]
     public GameState gameState;
 
+    [Header("결과")]
+    // 마지막 게임 결과 (결과 패널이 읽음)
+    public bool isCleared;
+    public string resultReason;
+
     private bool isNight = false;
 
     private const string SaveKey = "GameSave";
@@ -97,9 +102,11 @@ public class GameManager : MonoBehaviour
         gameState.hp.Clamp();
     }
 
-    // 게임오버 처리. 사유(체력 소진/기간 초과)를 받아 구분
+    // 게임오버 처리. 사유(체력 소진/기간 초과)를 결과에 기록
     private void GameOver(string reason)
     {
+        isCleared = false;
+        resultReason = reason;
         Debug.Log($"게임오버 - {reason}");
     }
 
@@ -110,9 +117,11 @@ public class GameManager : MonoBehaviour
             GameClear();
     }
 
-    // 백신 100 이상 시 호출. 이름 입력 패널 띄움
+    // 백신 100 이상 시 호출. 결과 기록 후 이름 입력 패널 띄움
     private void GameClear()
     {
+        isCleared = true;
+        resultReason = "백신 완성";
         Debug.Log("백신 완성");
         namePanel.SetActive(true);
     }
