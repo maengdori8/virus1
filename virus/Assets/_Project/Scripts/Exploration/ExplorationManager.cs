@@ -30,11 +30,13 @@ public class ExplorationManager : MonoBehaviour
         return currentArea.events[index];
     }
 
-    // 스태미나 차감(Spend 통해) 후 결과를 RewardManager에 넘김
+    // 스태미나 차감 후 결과 적용. 스태미나 소진되면 자동 복귀
     public void SelectChoice(ChoiceData choice)
     {
-        staminaManager.Spend(choice.staminaCost);
+        bool depleted = staminaManager.Spend(choice.staminaCost);
         rewardManager.Apply(choice.result);
+
+        if (depleted) Return();
     }
     // 적이랑 전투 시작, 콜백으로 승패 처리
     public void StartBattle(EnemySO ememy)

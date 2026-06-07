@@ -8,9 +8,6 @@ public class GameState : ScriptableObject
     // 날짜 턴
     public int currentDay;
 
-    // 밤 턴 (0이면 낮)
-    public int nightTurn;
-
     // 시간 데이터 (남은 날/하루 턴)
     public TimeData time = new TimeData();
 

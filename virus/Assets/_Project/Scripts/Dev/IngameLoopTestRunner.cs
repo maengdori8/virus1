@@ -9,7 +9,7 @@ public class IngameLoopTestRunner : MonoBehaviour
     {
         gameManager.StartGame();
         gameManager.StartNight();
-        Debug.Log("[IngameLoopTest] Started. Press N night, D day, E end night, C clear.");
+        Debug.Log("[IngameLoopTest] Started. Press N to start night, D to start day, E to end night, C to clear.");
     }
 
     private void Update()
