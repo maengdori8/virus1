@@ -32,6 +32,9 @@ public class GameState : ScriptableObject
     // 백신 완성도 (0~100)
     public int vaccineProgress;
 
+    // 주인공 의식 (0~100, 낮으면 페널티)
+    public int consciousness;
+
     // 보유 아이템
     public List<ItemSO> itemInventory = new List<ItemSO>();
 }

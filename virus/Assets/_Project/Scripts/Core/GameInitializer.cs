@@ -23,6 +23,9 @@ public class GameInitializer : MonoBehaviour
     public int startDefense = 5;
     public ElementType startElement = ElementType.Wood;
 
+    [Header("의식 초기값")]
+    public int startConsciousness = 100;
+
     [Header("시간 초기값")]
     public int startDayTurn = 30;
     public int startMaxTimeTurn = 5;
@@ -45,6 +48,7 @@ public class GameInitializer : MonoBehaviour
         gameState.battle.element = startElement;
 
         gameState.vaccineProgress = 0;
+        gameState.consciousness = startConsciousness;
         gameState.sampleInventory = new int[3];
 
         gameState.time.dayTurn = startDayTurn;

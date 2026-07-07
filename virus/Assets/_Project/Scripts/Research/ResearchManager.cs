@@ -7,6 +7,7 @@ public class ResearchManager : MonoBehaviour
     public GameState gameState;
     public BattleManager battleManager;
     public GameManager gameManager;
+    public ConsciousnessManager consciousnessManager;
 
     [Header("연구 단계 (순서대로 1→2→3)")]
     public ResearchStageSO[] stages;
@@ -74,6 +75,13 @@ public class ResearchManager : MonoBehaviour
         gameState.vaccineProgress += stage.progressGain;
         gameState.vaccineProgress = Mathf.Clamp(gameState.vaccineProgress, 0, 100);
         if (stageIndex + 1 > clearedCount) clearedCount = stageIndex + 1;
+
+        // 추가 보상: 스태미나 최대치 / 체력 / 의식 회복
+        gameState.stamina.max += stage.staminaMaxGain;
+        gameState.hp.current += stage.healAmount;
+        gameState.hp.Clamp();
+        if (consciousnessManager != null)
+            consciousnessManager.Recover(stage.consciousnessGain);
 
         // 마지막 단계 = 최종보스 처치 → 백신 완성
         if (stageIndex == stages.Length - 1)

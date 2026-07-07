@@ -11,6 +11,10 @@ public class ExplorationManager : MonoBehaviour
     public StaminaManager staminaManager;
     public GameManager gameManager;
 
+    [Header("휴식")]
+    // 턴 낭비 시 회복할 스태미나
+    public int restStaminaGain = 3;
+
     // 현재 탐사 중인 지역
     private ExplorationSO currentArea;
 
@@ -57,6 +61,12 @@ public class ExplorationManager : MonoBehaviour
         Return();
     }
 
+    // 턴을 낭비해 스태미나 회복 (표지판: 휴식)
+    public void Rest()
+    {
+        timeManager.SpendTimeTurn();
+        staminaManager.Gain(restStaminaGain);
+    }
 
     // 턴 1 소모 + 지역 초기화 + 낮으로 복귀
     public void Return()

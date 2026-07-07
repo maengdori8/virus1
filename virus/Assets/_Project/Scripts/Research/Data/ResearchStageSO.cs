@@ -18,4 +18,13 @@ public class ResearchStageSO : ScriptableObject
     [Header("보상")]
     // 백신 진행도 획득량
     public int progressGain;
+
+    // 스태미나 최대치 증가량
+    public int staminaMaxGain;
+
+    // 체력 회복량
+    public int healAmount;
+
+    // 의식 회복량
+    public int consciousnessGain;
 }

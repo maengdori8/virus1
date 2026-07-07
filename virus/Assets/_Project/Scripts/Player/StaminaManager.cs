@@ -31,6 +31,13 @@ public class StaminaManager : MonoBehaviour
         return false;
     }
 
+    // 스태미나 회복 (턴 낭비 / 휴식)
+    public void Gain(int amount)
+    {
+        gameState.stamina.current += amount;
+        gameState.stamina.Clamp();
+    }
+
     // 탐사 시작 시 호출. 패널티 플래그 초기화
     public void ResetPenalty()
     {

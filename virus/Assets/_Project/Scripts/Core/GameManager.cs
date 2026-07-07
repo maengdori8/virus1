@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public ResearchManager researchManager;
     public RankManager rankManager;
     public GameInitializer gameInitializer;
+    public ConsciousnessManager consciousnessManager;
 
     [Header("클리어 UI")]
     // 이름 입력 패널
@@ -55,11 +56,12 @@ public class GameManager : MonoBehaviour
         JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SaveKey), gameState);
     }
 
-    // 물자 소비 → 체력 회복 → 게임오버/클리어 체크
+    // 물자 소비 → 체력 회복 → 의식 감소 → 게임오버/클리어 체크
     public void StartDay()
     {
         supplyManager.ConsumeDaily();
         HealDaily();
+        if (consciousnessManager != null) consciousnessManager.Tick();
 
         if (gameState.hp.current <= 0)
         {

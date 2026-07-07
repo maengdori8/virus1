@@ -17,4 +17,14 @@ public class ItemSO : ScriptableObject
     [Header("효과")]
     // 사용 효과
     public ActionData effect;
+
+    [Header("전투 약 효과")]
+    // 공격력 증가량
+    public int buffAttack;
+
+    // 방어력 증가량
+    public int buffDefense;
+
+    // 약효 지속 턴
+    public int buffDuration;
 }

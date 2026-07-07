@@ -20,4 +20,8 @@ public class EnemySO : ScriptableObject
 
     // 방어력
     public int defense;
+
+    [Header("행동 패턴 (순서대로 반복, 비우면 일반 공격만)")]
+    // 반복되는 행동 순서
+    public EnemyAction[] actions;
 }
