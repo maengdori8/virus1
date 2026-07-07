@@ -48,10 +48,17 @@ public class ExplorationManager : MonoBehaviour
         battleManager.StartBattle(ememy, OnExeploreWin, OnExeploreLose);
     }
 
-    // 탐사 전투 승리 / 탐사 이어서 진행
+    // 탐사 전투 승리. 보상 받고 탐사 이어서 진행
     private void OnExeploreWin()
     {
         Debug.Log("탐사 전투 승리");
+        rewardManager.Apply(battleManager.GetEnemy().reward);
+    }
+
+    // 탐사 진행 중 여부 (UI 표시용)
+    public bool IsExploring()
+    {
+        return currentArea != null;
     }
 
     // 탐사 전투 패배. 강제복귀
