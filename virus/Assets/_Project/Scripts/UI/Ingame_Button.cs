@@ -8,11 +8,15 @@ using UnityEngine.UI;
 
 public class Ingame_Button : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
-    Image ButtonImg;
-    [SerializeField()] private string SceneName;
+    Image buttonImg;
+    [SerializeField()] private string sceneName;
+    [SerializeField()] Color32 baseColor;
+    [SerializeField()] Color32 pointColor;
+    [SerializeField()] Color32 clickColor;
     void Start()
     {
-        ButtonImg = this.gameObject.GetComponent<Image>();
+        buttonImg = this.gameObject.GetComponent<Image>();
+        buttonImg.color = baseColor;
     }
 
     void Update()
@@ -22,23 +26,22 @@ public class Ingame_Button : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        ButtonImg.color = new Color32(126, 126, 126, 255);
+        buttonImg.color = clickColor;
+        SceneManager.LoadScene(sceneName);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        SceneManager.LoadScene(SceneName);
-        ButtonImg.color = new Color32(255, 255, 255, 255);
-
+        buttonImg.color = baseColor;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
+        buttonImg.color = pointColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        ButtonImg.color = new Color32(255, 255, 255, 255);
+        buttonImg.color = baseColor;
     }
 }
