@@ -13,18 +13,30 @@ public class RewardManager : MonoBehaviour
         gameState.stamina.current += reward.staminaChange;
         gameState.supply.current += reward.suppliesChange;
         gameState.vaccineProgress += reward.vaccineChange;
+        gameState.consciousness += reward.consciousnessChange;
 
         // 모든 값을 정상 범위로 고정
         gameState.hp.Clamp();
         gameState.stamina.Clamp();
         gameState.supply.Clamp();
         gameState.vaccineProgress = Mathf.Clamp(gameState.vaccineProgress, 0, 100);
+        gameState.consciousness = Mathf.Clamp(gameState.consciousness, 0, 100);
 
         // 보유 샘플 더하거나 차감 (음수 방지)
         for (int i = 0; i < 3; i++)
         {
             gameState.sampleInventory[i] += reward.sampleChange[i];
             gameState.sampleInventory[i] = Mathf.Max(gameState.sampleInventory[i], 0);
+        }
+
+        // 획득 아이템 인벤토리에 추가
+        if (reward.itemGain != null)
+        {
+            for (int i = 0; i < reward.itemGain.Length; i++)
+            {
+                if (reward.itemGain[i] != null)
+                    gameState.itemInventory.Add(reward.itemGain[i]);
+            }
         }
     }
 }
