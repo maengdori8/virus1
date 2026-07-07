@@ -22,10 +22,14 @@ public class BattleManager : MonoBehaviour
     private Action onWin;
     private Action onLose;
 
+    // 전투 진행 중 여부
+    private bool inBattle;
+
     public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback)
     {
         currentEnemy = enemy;
         enemyHp = enemy.hp.max;
+        inBattle = true;
         enemyActionIndex = 0;
         enemyDefendBonus = 0;
         buffAttack = 0;
@@ -33,6 +37,24 @@ public class BattleManager : MonoBehaviour
         buffTurns = 0;
         onWin = winCallback;
         onLose = loseCallback;
+    }
+
+    // 전투 중 여부 (UI 표시용)
+    public bool InBattle()
+    {
+        return inBattle;
+    }
+
+    // 현재 적 (UI 표시용)
+    public EnemySO GetEnemy()
+    {
+        return currentEnemy;
+    }
+
+    // 현재 적 체력 (UI 표시용)
+    public int GetEnemyHp()
+    {
+        return enemyHp;
     }
 
     // 적의 다음 행동 (UI 예고용). 패턴 없으면 null
@@ -150,6 +172,7 @@ public class BattleManager : MonoBehaviour
 
     private void Win()
     {
+        inBattle = false;
         onWin?.Invoke();
         onWin = null;
         onLose = null;
@@ -157,6 +180,7 @@ public class BattleManager : MonoBehaviour
 
     private void Lose()
     {
+        inBattle = false;
         onLose?.Invoke();
         onWin = null;
         onLose = null;

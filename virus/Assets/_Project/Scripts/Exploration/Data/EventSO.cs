@@ -10,4 +10,8 @@ public class EventSO : ScriptableObject
 
     // 선택지 목록
     public ChoiceData[] choices;
+
+    [Header("전투 이벤트 (비우면 일반 이벤트)")]
+    // 등장 적
+    public EnemySO enemy;
 }

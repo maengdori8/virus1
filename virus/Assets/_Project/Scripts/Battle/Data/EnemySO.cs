@@ -24,4 +24,8 @@ public class EnemySO : ScriptableObject
     [Header("행동 패턴 (순서대로 반복, 비우면 일반 공격만)")]
     // 반복되는 행동 순서
     public EnemyAction[] actions;
+
+    [Header("보상 (탐사 전투 승리 시)")]
+    // 승리 보상
+    public ActionData reward;
 }

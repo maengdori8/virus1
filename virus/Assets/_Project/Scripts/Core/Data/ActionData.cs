@@ -11,6 +11,9 @@ public class ActionData
     // 스태미나 변화량
     public int staminaChange;
 
+    // 의식 변화량
+    public int consciousnessChange;
+
     [Header("자원 변화량")]
     // 물자 변화량
     public int suppliesChange;
@@ -20,4 +23,8 @@ public class ActionData
 
     // 백신 진행도 변화량
     public int vaccineChange;
+
+    [Header("아이템")]
+    // 획득 아이템
+    public ItemSO[] itemGain;
 }
