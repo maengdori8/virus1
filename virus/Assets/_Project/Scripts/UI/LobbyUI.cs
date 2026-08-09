@@ -3,11 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class LobbyUI : MonoBehaviour
 {
-    [Header("ÆÐ³Î")]
+    [Header("ï¿½Ð³ï¿½")]
     public GameObject rankPanel;
 
     public void OnClickStart()
     {
+        IngameBootstrap.ResetRun();
+        StoryUI.ResetIntro();
         SceneManager.LoadScene("Ingame");
     }
 
