@@ -25,9 +25,12 @@ public class BattleManager : MonoBehaviour
     // 전투 진행 중 여부
     private bool inBattle;
 
-    public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback)
+    private bool useStamina;
+
+    public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback, bool spendStamina = false)
     {
         currentEnemy = enemy;
+        useStamina = spendStamina;
         enemyHp = enemy.hp.max;
         inBattle = true;
         enemyActionIndex = 0;
@@ -65,6 +68,24 @@ public class BattleManager : MonoBehaviour
         return currentEnemy.actions[enemyActionIndex];
     }
 
+    // 약효 남은 턴 (UI 표시용)
+    public int GetBuffTurns()
+    {
+        return buffTurns;
+    }
+
+    // 약 공격 버프량 (UI 표시용)
+    public int GetBuffAttack()
+    {
+        return buffAttack;
+    }
+
+    // 약 방어 버프량 (UI 표시용)
+    public int GetBuffDefense()
+    {
+        return buffDefense;
+    }
+
     public void PlayerAttack()
     {
         int damage = (gameState.battle.attack + buffAttack) - (currentEnemy.defense + enemyDefendBonus);
@@ -76,7 +97,7 @@ public class BattleManager : MonoBehaviour
 
         enemyHp -= damage;
         enemyDefendBonus = 0;   // 방어는 1회성
-        staminaManager.Spend(1);
+        if(useStamina)staminaManager.Spend(1);
 
         TickBuff();
 
