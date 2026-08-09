@@ -48,8 +48,12 @@ public class GameInitializer : MonoBehaviour
         gameState.battle.element = startElement;
 
         gameState.vaccineProgress = 0;
+        gameState.reasearchCleared = 0;
         gameState.consciousness = startConsciousness;
         gameState.sampleInventory = new int[3];
+        gameState.itemInventory.Clear();
+        gameState.currentDay = 0;
+        gameState.time.dayTurn = startDayTurn;
 
         gameState.time.dayTurn = startDayTurn;
         gameState.time.timeTurn = startMaxTimeTurn;

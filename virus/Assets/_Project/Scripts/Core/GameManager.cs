@@ -60,16 +60,22 @@ public class GameManager : MonoBehaviour
     public void StartDay()
     {
         supplyManager.ConsumeDaily();
-        HealDaily();
-        if (consciousnessManager != null) consciousnessManager.Tick();
-
-        if (gameState.hp.current <= 0)
+        
+        if(gameState.hp.current <= 0)
         {
             GameOver("체력 소진");
             return;
         }
 
-        if (gameState.vaccineProgress >= 100)
+        HealDaily();
+        if (consciousnessManager != null) consciousnessManager.Tick();
+
+        if(gameState.hp.current <= 0)
+        {
+            GameOver("체력 소진");
+            return;
+        }
+        if(gameState.vaccineProgress >= 100)
         {
             GameClear();
             return;
@@ -125,13 +131,15 @@ public class GameManager : MonoBehaviour
         isCleared = true;
         resultReason = "백신 완성";
         Debug.Log("백신 완성");
-        namePanel.SetActive(true);
+
+        if (namePanel != null) namePanel.SetActive(true);
     }
 
     // 확인 버튼에 연결. 입력한 이름으로 랭킹 저장
     public void OnSubmitName()
     {
-        rankManager.AddRank(nameInput.text);
-        namePanel.SetActive(false);
+        rankManager.AddRank(nameInput != null ? nameInput.text : "");
+
+        if (namePanel != null) namePanel.SetActive(false);
     }
 }

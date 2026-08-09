@@ -12,20 +12,19 @@ public class ResearchManager : MonoBehaviour
     [Header("연구 단계 (순서대로 1→2→3)")]
     public ResearchStageSO[] stages;
 
-    private int clearedCount; // 클리어한 단계 수 (잠금 해제 기준)
     private int stageIndex;   // 현재 도전 중인 단계
     private int enemyIndex;   // 단계 내 현재 적
 
     // 새 게임 시작 시 연구 진행 초기화
     public void ResetProgress()
     {
-        clearedCount = 0;
+        gameState.reasearchCleared = 0;
     }
 
     // 해당 단계가 열렸는지 (이전 단계까지 클리어해야 열림)
     public bool IsStageUnlocked(int index)
     {
-        return index >= 0 && index <= clearedCount;
+        return index == gameState.reasearchCleared;
     }
 
     // 샘플 충분한지 확인. sampleCost와 보유량 비교
@@ -74,7 +73,7 @@ public class ResearchManager : MonoBehaviour
         // 단계 클리어: 백신 진행도 획득 + 다음 단계 잠금 해제
         gameState.vaccineProgress += stage.progressGain;
         gameState.vaccineProgress = Mathf.Clamp(gameState.vaccineProgress, 0, 100);
-        if (stageIndex + 1 > clearedCount) clearedCount = stageIndex + 1;
+        if (stageIndex + 1 > gameState.reasearchCleared) gameState.reasearchCleared = stageIndex + 1;
 
         // 추가 보상: 스태미나 최대치 / 체력 / 의식 회복
         gameState.stamina.max += stage.staminaMaxGain;
