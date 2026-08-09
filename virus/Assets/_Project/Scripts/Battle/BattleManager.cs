@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -14,10 +15,16 @@ public class BattleManager : MonoBehaviour
     private int enemyActionIndex;   // 현재 적 행동 순서
     private int enemyDefendBonus;   // 적 방어 행동으로 얻은 임시 방어
 
-    // 약 버프 상태
-    private int buffAttack;
-    private int buffDefense;
-    private int buffTurns;
+    // 약 한 개가 거는 버프. 약마다 따로 시간을 셈
+    private class Buff
+    {
+        public int attack;
+        public int defense;
+        public int turns;
+    }
+
+    // 지금 걸려 있는 약효 목록
+    private readonly List<Buff> buffs = new List<Buff>();
 
     private Action onWin;
     private Action onLose;
@@ -35,9 +42,7 @@ public class BattleManager : MonoBehaviour
         inBattle = true;
         enemyActionIndex = 0;
         enemyDefendBonus = 0;
-        buffAttack = 0;
-        buffDefense = 0;
-        buffTurns = 0;
+        buffs.Clear();
         onWin = winCallback;
         onLose = loseCallback;
     }
@@ -68,31 +73,44 @@ public class BattleManager : MonoBehaviour
         return currentEnemy.actions[enemyActionIndex];
     }
 
-    // 약효 남은 턴 (UI 표시용)
+    // 약효 남은 턴 중 가장 긴 것 (UI 표시용)
     public int GetBuffTurns()
     {
-        return buffTurns;
+        int max = 0;
+        for (int i = 0; i < buffs.Count; i++)
+        {
+            if (buffs[i].turns > max) max = buffs[i].turns;
+        }
+        return max;
     }
 
-    // 약 공격 버프량 (UI 표시용)
+    // 걸려 있는 공격 버프 합 (UI 표시용)
     public int GetBuffAttack()
     {
-        return buffAttack;
+        int sum = 0;
+        for (int i = 0; i < buffs.Count; i++) sum += buffs[i].attack;
+        return sum;
     }
 
-    // 약 방어 버프량 (UI 표시용)
+    // 걸려 있는 방어 버프 합 (UI 표시용)
     public int GetBuffDefense()
     {
-        return buffDefense;
+        int sum = 0;
+        for (int i = 0; i < buffs.Count; i++) sum += buffs[i].defense;
+        return sum;
     }
 
     public void PlayerAttack()
     {
-        int damage = (gameState.battle.attack + buffAttack) - (currentEnemy.defense + enemyDefendBonus);
-        if (damage < 1) damage = 1;
+        if (!inBattle) return;
 
+        int power = gameState.battle.attack + GetBuffAttack();
+
+        // 상성은 방어를 빼기 전에 곱해야 단단한 적한테도 효과가 남음
         if (IsStrong(gameState.battle.element, currentEnemy.element))
-            damage = (int)(damage * elementBonus);
+            power = Mathf.RoundToInt(power * elementBonus);
+
+        int damage = power - (currentEnemy.defense + enemyDefendBonus);
         if (damage < 1) damage = 1;
 
         enemyHp -= damage;
@@ -113,14 +131,19 @@ public class BattleManager : MonoBehaviour
     // 약을 사용해 버프. 전투 턴을 소모하므로 적이 행동함
     public void UseDrug(ItemSO drug)
     {
-        if (drug == null) return;
+        if (!inBattle) return;
+        if (drug == null || drug.buffDuration <= 0) return;
 
-        buffAttack = drug.buffAttack;
-        buffDefense = drug.buffDefense;
-        buffTurns = drug.buffDuration;
+        // 약마다 따로 걸려서 각성제 + 진통제를 같이 쓸 수 있음
+        Buff buff = new Buff();
+        buff.attack = drug.buffAttack;
+        buff.defense = drug.buffDefense;
+        buff.turns = drug.buffDuration;
+        buffs.Add(buff);
 
         gameState.itemInventory.Remove(drug);
 
+        // 약값은 적한테 한 턴 내주는 것. 약효 시간은 공격할 때만 줄어듦
         EnemyTurn();
     }
 
@@ -153,11 +176,10 @@ public class BattleManager : MonoBehaviour
     // 적 공격 처리
     private void EnemyAttack(int power)
     {
-        int damage = power - (gameState.battle.defense + buffDefense);
-        if (damage < 1) damage = 1;
-
         if (IsStrong(currentEnemy.element, gameState.battle.element))
-            damage = (int)(damage * elementBonus);
+            power = Mathf.RoundToInt(power * elementBonus);
+
+        int damage = power - (gameState.battle.defense + GetBuffDefense());
         if (damage < 1) damage = 1;
 
         gameState.hp.current -= damage;
@@ -167,16 +189,14 @@ public class BattleManager : MonoBehaviour
             Lose();
     }
 
-    // 약효 턴 감소. 0 되면 버프 해제
+    // 약효 턴을 하나씩 줄이고 떨어진 약은 뺌
     private void TickBuff()
     {
-        if (buffTurns <= 0) return;
-
-        buffTurns--;
-        if (buffTurns <= 0)
+        for (int i = buffs.Count - 1; i >= 0; i--)
         {
-            buffAttack = 0;
-            buffDefense = 0;
+            buffs[i].turns--;
+
+            if (buffs[i].turns <= 0) buffs.RemoveAt(i);
         }
     }
 
