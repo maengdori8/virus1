@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyUI : MonoBehaviour
 {
-    [Header("�г�")]
+    [Header("패널")]
     public GameObject rankPanel;
 
     public void OnClickStart()
