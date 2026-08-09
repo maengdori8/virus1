@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class UpperUISceneLoader : MonoBehaviour
 {
-    [SerializeField] private string upperUISceneName = "UpperUI";
+    [SerializeField] private string upperUISceneName = "State";
 
     private void Awake()
     {
