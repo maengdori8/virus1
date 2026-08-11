@@ -115,7 +115,7 @@ public class BattleManager : MonoBehaviour
 
         enemyHp -= damage;
         enemyDefendBonus = 0;   // 방어는 1회성
-        if(useStamina)staminaManager.Spend(1);
+        if (useStamina && staminaManager != null) staminaManager.Spend(1);
 
         TickBuff();
 
@@ -214,16 +214,21 @@ public class BattleManager : MonoBehaviour
     private void Win()
     {
         inBattle = false;
-        onWin?.Invoke();
+
+        // 콜백 안에서 다음 전투가 시작될 수 있으니 먼저 비우고 부른다
+        Action callback = onWin;
         onWin = null;
         onLose = null;
+        callback?.Invoke();
     }
 
     private void Lose()
     {
         inBattle = false;
-        onLose?.Invoke();
+
+        Action callback = onLose;
         onWin = null;
         onLose = null;
+        callback?.Invoke();
     }
 }
