@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // 씬에 매니저를 붙이고 인스펙터 참조를 채워주는 도구.
 // 이미 연결된 값은 건드리지 않고 비어 있는 것만 채운다.
@@ -145,16 +147,92 @@ public static class SceneSetupTool
         Debug.Log("빌드 세팅 정리 완료 (기존 등록은 지우지 않음)");
     }
 
-    // 상단 HUD 씬: 의식 관리만 따로 둔다 (겹쳐 로드되므로 다른 씬 참조 불가)
+    // 상단 HUD 씬. 겹쳐 로드되므로 다른 씬 오브젝트를 참조할 수 없어 의식 관리를 여기에도 둔다
     private static void WireUpperScene(GameState state)
     {
         if (!OpenIfExists(UpperScenePath)) return;
 
         changed = false;
-        ConsciousnessManager conscious = Ensure<ConsciousnessManager>(FindOrCreateRoot("Manager"), "ConsciousnessManager");
-        if (conscious.gameState == null) { conscious.gameState = state; changed = true; }
+        ConsciousnessManager conscious = Ensure<ConsciousnessManager>(FindOrCreateRoot("Manager").transform, "ConsciousnessManager");
+        Set(ref conscious.gameState, state);
+
+        const string Screen = "Canvas/UpperScreen/";
+
+        GameObject hpRoot = FindByPath(Screen + "PlayerResource/HP");
+        if (hpRoot != null)
+        {
+            HpDisplay hp = GetOrAdd<HpDisplay>(hpRoot);
+            Set(ref hp.gameState, state);
+            Set(ref hp.hpText, FindComp<TextMeshProUGUI>(Screen + "PlayerResource/HP/TextHp"));
+            Set(ref hp.fillImage, FindComp<Image>(Screen + "PlayerResource/HP/NowHp"));
+        }
+        else Debug.LogWarning("체력 오브젝트를 못 찾음: " + Screen + "PlayerResource/HP");
+
+        GameObject staminaRoot = FindByPath(Screen + "PlayerResource/STAMINA");
+        if (staminaRoot != null)
+        {
+            StaminaDisplay st = GetOrAdd<StaminaDisplay>(staminaRoot);
+            Set(ref st.gameState, state);
+            Set(ref st.staminaText, FindComp<TextMeshProUGUI>(Screen + "PlayerResource/STAMINA/TextStamina"));
+            Set(ref st.fillImage, FindComp<Image>(Screen + "PlayerResource/STAMINA/NowStamina"));
+        }
+        else Debug.LogWarning("스태미나 오브젝트를 못 찾음: " + Screen + "PlayerResource/STAMINA");
+
+        GameObject timerRoot = FindByPath(Screen + "Timer");
+        if (timerRoot != null)
+        {
+            TimeDisplay td = GetOrAdd<TimeDisplay>(timerRoot);
+            Set(ref td.gameState, state);
+            // Timer 밑에 TMP가 하나뿐이라 남은 턴에만 물린다. 날짜 표시는 텍스트를 하나 더 만들어야 함
+            Set(ref td.turnText, FindComp<TextMeshProUGUI>(Screen + "Timer/Text (TMP)"));
+            Set(ref td.turnFill, FindComp<Image>(Screen + "Timer/TimerInside"));
+
+            if (td.dayText == null)
+                Debug.Log("TimeDisplay.dayText 는 비어 있음. 날짜를 따로 보이려면 Timer 밑에 텍스트를 하나 더 만들 것");
+        }
+        else Debug.LogWarning("타이머 오브젝트를 못 찾음: " + Screen + "Timer");
+
+        GameObject face = FindByPath(Screen + "FaceImage");
+        if (face != null)
+        {
+            FaceDisplay fd = GetOrAdd<FaceDisplay>(face);
+            Set(ref fd.consciousnessManager, conscious);
+            Set(ref fd.faceImage, face.GetComponent<Image>());
+
+            if (fd.faceSprites == null || fd.faceSprites.Length == 0)
+                Debug.Log("FaceDisplay.faceSprites 가 비어 있음. 명료/흐림/혼미 3장을 넣을 것");
+        }
+        else Debug.LogWarning("얼굴 오브젝트를 못 찾음: " + Screen + "FaceImage");
 
         SaveIfChanged();
+    }
+
+    [MenuItem("Tools/백신 서바이벌/상단 UI 씬 이름 일괄 수정", false, 4)]
+    public static void RepairAllUpperLoaders()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+
+        // 테스트 씬과 안 쓰는 Battle 씬에도 옛 이름이 남아 있다
+        string[] all = AssetDatabase.FindAssets("t:SceneAsset", new[] { "Assets/Scenes" });
+        int fixedCount = 0;
+
+        foreach (string guid in all)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+
+            changed = false;
+            RepairUpperLoaders();
+
+            if (!changed) continue;
+
+            Scene scene = SceneManager.GetActiveScene();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            fixedCount++;
+        }
+
+        Debug.Log("상단 UI 씬 이름 수정 완료. 고친 씬 " + fixedCount + "개");
     }
 
     private static void WireScene(string sceneName, GameState state)
@@ -263,10 +341,10 @@ public static class SceneSetupTool
         SaveIfChanged();
     }
 
-    // 비어 있을 때만 채운다
+    // 비어 있을 때만 채운다. 넣을 값이 없으면 그냥 둔다
     private static void Set<T>(ref T field, T value) where T : Object
     {
-        if (field != null) return;
+        if (field != null || value == null) return;
 
         field = value;
         changed = true;
@@ -312,6 +390,48 @@ public static class SceneSetupTool
 
         EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
         return true;
+    }
+
+    // "Canvas/UpperScreen/HP" 처럼 경로로 오브젝트를 찾는다
+    private static GameObject FindByPath(string path)
+    {
+        string[] parts = path.Split('/');
+        Transform found = null;
+
+        foreach (GameObject go in SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            if (go.name != parts[0]) continue;
+            found = go.transform;
+            break;
+        }
+
+        for (int i = 1; i < parts.Length && found != null; i++)
+            found = found.Find(parts[i]);
+
+        return found == null ? null : found.gameObject;
+    }
+
+    private static T FindComp<T>(string path) where T : Component
+    {
+        GameObject go = FindByPath(path);
+        if (go == null)
+        {
+            Debug.LogWarning("오브젝트를 못 찾음: " + path);
+            return null;
+        }
+        return go.GetComponent<T>();
+    }
+
+    // 지정한 오브젝트에만 붙인다 (씬 전체를 뒤지지 않음)
+    private static T GetOrAdd<T>(GameObject target) where T : Component
+    {
+        T existing = target.GetComponent<T>();
+        if (existing != null) return existing;
+
+        T added = Undo.AddComponent<T>(target);
+        changed = true;
+        Debug.Log("추가: " + target.name + " (" + typeof(T).Name + ")");
+        return added;
     }
 
     private static GameObject FindOrCreateRoot(string name)
