@@ -13,7 +13,13 @@ public class QuickButton : MonoBehaviour, IPointerClickHandler
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
-        switch (typeNo) {
+        Qclick();
+    }
+
+    public void Qclick()
+    {
+        switch (typeNo)
+        {
             case 0:
                 SceneManager.LoadScene(targetSceneName);
                 break;
@@ -27,6 +33,5 @@ public class QuickButton : MonoBehaviour, IPointerClickHandler
         }
 
     }
-
 
 }

@@ -20,7 +20,7 @@ public class StoryLIne : MonoBehaviour, IPointerClickHandler
         ShowNext();
     }
 
-    void ShowNext()
+    public void ShowNext()
     {
         if (cutCounter < transform.childCount)
         {
@@ -33,7 +33,7 @@ public class StoryLIne : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    void Reset()
+    public void Reset()
     {
         cutCounter = 0;
 
