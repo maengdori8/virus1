@@ -109,22 +109,10 @@ public class BattleTestRunner : MonoBehaviour
             : "";
 
         infoText.text =
-            target.enemyName + " (" + Element(target.element) + ")  " + bm.GetEnemyHp() + "/" + target.hp.max + "\n" +
+            target.enemyName + " (" + ElementName.Of(target.element) + ")  " + bm.GetEnemyHp() + "/" + target.hp.max + "\n" +
             "다음 행동: " + Action(bm.GetNextEnemyAction()) + "\n" +
-            "나 (" + Element(state.battle.element) + ")  체력 " + state.hp.current + "/" + state.hp.max +
+            "나 (" + ElementName.Of(state.battle.element) + ")  체력 " + state.hp.current + "/" + state.hp.max +
             "  스태미나 " + state.stamina.current + buff;
-    }
-
-    private string Element(ElementType e)
-    {
-        switch (e)
-        {
-            case ElementType.Wood: return "목";
-            case ElementType.Fire: return "화";
-            case ElementType.Earth: return "토";
-            case ElementType.Metal: return "금";
-            default: return "수";
-        }
     }
 
     private string Action(EnemyAction act)
