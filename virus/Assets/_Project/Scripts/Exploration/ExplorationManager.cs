@@ -33,6 +33,11 @@ public class ExplorationManager : MonoBehaviour
     {
         currentArea = area;
         depth = 0;
+
+        // 다녀온 지역의 속성이 내 속성이 된다.
+        // 다음 탐사 전까지 유지되므로 낮의 연구 전투도 이 속성으로 치른다. 버그 아님
+        gameState.battle.element = area.element;
+
         gameState.stamina.current = area.staminaLimit;
         gameState.stamina.Clamp();
         staminaManager.ResetPenalty();

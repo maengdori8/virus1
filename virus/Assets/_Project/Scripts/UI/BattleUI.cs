@@ -31,9 +31,12 @@ public class BattleUI : MonoBehaviour
         if (!active) return;
 
         EnemySO enemy = battleManager.GetEnemy();
-        enemyNameText.text = enemy.enemyName;
+
+        // 속성을 안 보여주면 상성이 그냥 랜덤으로 느껴진다
+        enemyNameText.text = enemy.enemyName + " (" + ElementName.Of(enemy.element) + ")";
         enemyHpText.text = battleManager.GetEnemyHp() + " / " + enemy.hp.max;
-        nextActionText.text = "다음 행동: " + ActionLabel(battleManager.GetNextEnemyAction());
+        nextActionText.text = "다음 행동: " + ActionLabel(battleManager.GetNextEnemyAction())
+                              + "    내 속성 " + ElementName.Of(gameState.battle.element);
     }
 
     // 공격 버튼에 연결
