@@ -33,6 +33,8 @@ public class GameInitializer : MonoBehaviour
     // Inspector의 초기값으로 GameState와 TimeData를 전부 세팅
     public void Init()
     {
+        gameState.KeepLoaded();
+
         gameState.hp.current = startHp;
         gameState.hp.max = startMaxHp;
         gameState.hp.dailyHeal = startDailyHeal;

@@ -39,4 +39,12 @@ public class GameState : ScriptableObject
 
     // 보유 아이템
     public List<ItemSO> itemInventory = new List<ItemSO>();
+
+    // 씬을 넘기는 순간 이걸 붙들고 있는 오브젝트가 하나도 없는 씬이 끼어 있으면
+    // 에셋이 통째로 내려갔다가 파일에서 다시 읽혀서 그때까지 모은 게 전부 날아간다.
+    // 탐사 입구가 딱 그런 씬이라 판을 시작할 때 한 번 막아둔다
+    public void KeepLoaded()
+    {
+        hideFlags = HideFlags.DontUnloadUnusedAsset;
+    }
 }
