@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 // 게임 루프 관리
@@ -141,5 +142,9 @@ public class GameManager : MonoBehaviour
         rankManager.AddRank(nameInput != null ? nameInput.text : "");
 
         if (namePanel != null) namePanel.SetActive(false);
+
+        // 판이 끝났으니 로비로. 다음 입장 때 새 게임으로 시작된다
+        IngameBootstrap.ResetRun();
+        SceneManager.LoadScene("Lobby");
     }
 }
