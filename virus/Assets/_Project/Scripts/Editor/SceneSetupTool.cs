@@ -196,7 +196,7 @@ public static class SceneSetupTool
         if (face != null)
         {
             FaceDisplay fd = GetOrAdd<FaceDisplay>(face);
-            Set(ref fd.consciousnessManager, conscious);
+            Set(ref fd.gameState, state);
             Set(ref fd.faceImage, face.GetComponent<Image>());
 
             if (fd.faceSprites == null || fd.faceSprites.Length == 0)

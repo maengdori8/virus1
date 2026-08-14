@@ -51,8 +51,14 @@ public class ConsciousnessManager : MonoBehaviour
     // 얼굴 표시용 단계 (0 명료 ~ 2 혼미)
     public int FaceLevel()
     {
-        if (gameState.consciousness > 66) return 0;
-        if (gameState.consciousness > 33) return 1;
+        return FaceLevelOf(gameState.consciousness);
+    }
+
+    // 상단 UI는 씬이 따로라 매니저를 붙들 수 없어서 숫자만 넘겨받는다
+    public static int FaceLevelOf(int consciousness)
+    {
+        if (consciousness > 66) return 0;
+        if (consciousness > 33) return 1;
         return 2;
     }
 }
