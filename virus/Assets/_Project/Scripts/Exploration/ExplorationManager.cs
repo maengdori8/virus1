@@ -53,6 +53,9 @@ public class ExplorationManager : MonoBehaviour
     // 스태미나 차감 후 결과 적용. 스태미나 소진되면 자동 복귀
     public void SelectChoice(ChoiceData choice)
     {
+        // 복귀가 이미 걸린 뒤에 들어온 입력. 스태미나는 안 깎이는데 보상만 또 들어간다
+        if (!IsExploring()) return;
+
         bool depleted = staminaManager.Spend(choice.staminaCost);
         rewardManager.Apply(choice.result);
         ApplyDepthBonus(choice.result);
