@@ -165,10 +165,12 @@ public class AdventureUI : MonoBehaviour
 
         for (int i = 0; i < choiceButtons.Length; i++)
         {
+            if (choiceButtons[i] == null) continue;
+
             bool show = !isBattle && currentEvent.choices != null && i < currentEvent.choices.Length;
             choiceButtons[i].SetActive(show);
 
-            if (show)
+            if (show && choiceTexts != null && i < choiceTexts.Length && choiceTexts[i] != null)
                 choiceTexts[i].text = currentEvent.choices[i].text + " (스태미나 " + currentEvent.choices[i].staminaCost + ")";
         }
     }

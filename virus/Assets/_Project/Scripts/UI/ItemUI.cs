@@ -28,10 +28,12 @@ public class ItemUI : MonoBehaviour
 
         for (int i = 0; i < slots.Length; i++)
         {
+            if (slots[i] == null) continue;
+
             bool has = i < gameState.itemInventory.Count;
             slots[i].SetActive(has);
 
-            if (has)
+            if (has && slotTexts != null && i < slotTexts.Length && slotTexts[i] != null)
                 slotTexts[i].text = gameState.itemInventory[i].itemName;
         }
     }

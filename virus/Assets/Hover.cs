@@ -10,11 +10,15 @@ public class Hover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
+        if (target == null) return;
+
         target.SetActive(true);
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
+        if (target == null) return;
+
         target.SetActive(false);
     }
 
