@@ -109,13 +109,20 @@ public class AdventureUI : MonoBehaviour
     public void OnClickRest()
     {
         explorationManager.Rest();
+
+        if (!explorationManager.IsExploring())
+        {
+            SceneManager.LoadScene("Ingame");
+            return;
+        }
+
         DrawEvent();
     }
 
     // 안쪽으로 더 들어가기 버튼에 연결
     public void OnClickDeeper()
     {
-        explorationManager.GoDeeper();
+        bool moved = explorationManager.GoDeeper();
 
         // 스태미나 소진으로 강제복귀됐으면 낮으로
         if (!explorationManager.IsExploring())
@@ -123,6 +130,9 @@ public class AdventureUI : MonoBehaviour
             SceneManager.LoadScene("Ingame");
             return;
         }
+
+        // 제일 안쪽이라 못 들어갔다. 여기서 새로 뽑으면 공짜 이벤트 교체가 된다
+        if (!moved) return;
 
         DrawEvent();
     }
@@ -140,8 +150,15 @@ public class AdventureUI : MonoBehaviour
         currentEvent = explorationManager.GetRandomEvent();
         descriptionText.text = currentEvent.description;
 
+        // 들어갈수록 값이 비싸지니 다음 값을 같이 보여줘야 판단이 된다
         if (depthText != null)
-            depthText.text = "깊이 " + explorationManager.GetDepth();
+        {
+            int cost = explorationManager.GetDeeperCost();
+
+            depthText.text = cost > 0
+                ? "깊이 " + explorationManager.GetDepth() + "   더 들어가기 " + cost
+                : "깊이 " + explorationManager.GetDepth() + "   제일 안쪽";
+        }
 
         bool isBattle = currentEvent.enemy != null;
         fightButton.SetActive(isBattle);
