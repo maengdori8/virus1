@@ -68,7 +68,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        HealDaily();
+        // 혼미하면 몸이 스스로 회복하지 못한다.
+        // 회복량과 혼미 페널티가 맞물려 상쇄되면 혼미에 빠져도 아무 일이 없다
+        bool dazed = consciousnessManager != null && consciousnessManager.IsLow();
+        if (!dazed) HealDaily();
+
         if (consciousnessManager != null) consciousnessManager.Tick();
 
         if(gameState.hp.current <= 0)
