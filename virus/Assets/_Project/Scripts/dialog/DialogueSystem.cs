@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,21 +7,21 @@ public class DialogueSystem : MonoBehaviour
 {
     public static DialogueSystem Instance { get; private set; }
 
-    [Header("´ëÈ­ UI")]
+    [Header("ëŒ€í™” UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private Image speakerFaceImage;
     [SerializeField] private TMP_Text speakerNameText;
     [SerializeField] private TMP_Text dialogueText;
 
-    [Header("¼±ÅÃÁö UI")]
+    [Header("ì„ íƒì§€ UI")]
     [SerializeField] private Transform choiceParent;
     [SerializeField] private GameObject choiceButtonPrefab;
 
-    [Header("´ë»ç Ãâ·Â ¼³Á¤")]
+    [Header("ëŒ€ì‚¬ ì¶œë ¥ ì„¤ì •")]
     [SerializeField] private float typingSpeed = 0.04f;
 
-    [Header("¼±ÅÃÁö ¼³Á¤")]
-    [Tooltip("¼±ÅÃÁö Ç¥½Ã ½Ã ¼û±æ GameObject (null ÀÌ¸é dialogueText »ç¿ë)")]
+    [Header("ì„ íƒì§€ ì„¤ì •")]
+    [Tooltip("ì„ íƒì§€ í‘œì‹œ ì‹œ ìˆ¨ê¸¸ GameObject (null ì´ë©´ dialogueText ì‚¬ìš©)")]
     [SerializeField] private GameObject hideOnChoiceTarget;
 
     private DialogueData currentDialogueData;
@@ -45,7 +45,7 @@ public class DialogueSystem : MonoBehaviour
 
     private void Start()
     {
-        // ½ÃÀÛ ½Ã ´ëÈ­Ã¢°ú ¼±ÅÃÁö ¸ğµÎ ¼û±è
+        // ì‹œì‘ ì‹œ ëŒ€í™”ì°½ê³¼ ì„ íƒì§€ ëª¨ë‘ ìˆ¨ê¹€
         dialoguePanel.SetActive(false);
         ClearChoiceButtons();
     }
@@ -68,7 +68,7 @@ public class DialogueSystem : MonoBehaviour
             dialogueData.dialogueLines == null ||
             dialogueData.dialogueLines.Length == 0)
         {
-            Debug.LogWarning("´ëÈ­ µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ëŒ€í™” ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -96,7 +96,7 @@ public class DialogueSystem : MonoBehaviour
 
         ClearChoiceButtons();
 
-        // ¼û±è ´ë»ó ´Ù½Ã Ç¥½Ã
+        // ìˆ¨ê¹€ ëŒ€ìƒ ë‹¤ì‹œ í‘œì‹œ
         SetHideTargetActive(true);
 
         if (typingCoroutine != null)
@@ -202,7 +202,7 @@ public class DialogueSystem : MonoBehaviour
     {
         ClearChoiceButtons();
 
-        // ÁöÁ¤ÇÑ ¿ÀºêÁ§Æ® ¼û±è (null ÀÌ¸é dialogueText)
+        // ì§€ì •í•œ ì˜¤ë¸Œì íŠ¸ ìˆ¨ê¹€ (null ì´ë©´ dialogueText)
         SetHideTargetActive(false);
 
         for (int i = 0; i < choices.Length; i++)
@@ -218,14 +218,14 @@ public class DialogueSystem : MonoBehaviour
 
             if (button == null)
             {
-                Debug.LogError("¼±ÅÃÁö ÇÁ¸®ÆÕ¿¡ Button ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù.");
+                Debug.LogError("ì„ íƒì§€ í”„ë¦¬íŒ¹ì— Button ì»´í¬ë„ŒíŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
                 Destroy(buttonObject);
                 continue;
             }
 
             if (buttonText == null)
             {
-                Debug.LogError("¼±ÅÃÁö ÇÁ¸®ÆÕ ¾È¿¡ TMP_Text °¡ ¾ø½À´Ï´Ù.");
+                Debug.LogError("ì„ íƒì§€ í”„ë¦¬íŒ¹ ì•ˆì— TMP_Text ê°€ ì—†ìŠµë‹ˆë‹¤.");
                 Destroy(buttonObject);
                 continue;
             }
@@ -250,7 +250,7 @@ public class DialogueSystem : MonoBehaviour
     {
         ClearChoiceButtons();
 
-        // ¼û±è ´ë»ó ´Ù½Ã Ç¥½Ã
+        // ìˆ¨ê¹€ ëŒ€ìƒ ë‹¤ì‹œ í‘œì‹œ
         SetHideTargetActive(true);
 
         ExecuteChoiceEvent(choice.eventId);
@@ -274,19 +274,19 @@ public class DialogueSystem : MonoBehaviour
         switch (eventId)
         {
             case 0:
-                Debug.Log("eventId 0: º¸»ó 0 Áö±Ş");
+                Debug.Log("eventId 0: ë³´ìƒ 0 ì§€ê¸‰");
                 break;
             case 1:
-                Debug.Log("eventId 1: º¸»ó 1 Áö±Ş");
+                Debug.Log("eventId 1: ë³´ìƒ 1 ì§€ê¸‰");
                 break;
             case 2:
-                Debug.Log("eventId 2: È£°¨µµ Áõ°¡");
+                Debug.Log("eventId 2: í˜¸ê°ë„ ì¦ê°€");
                 break;
             case 3:
-                Debug.Log("eventId 3: º¸»ó »çÀÌÅ¬ ½ÃÀÛ");
+                Debug.Log("eventId 3: ë³´ìƒ ì‚¬ì´í´ ì‹œì‘");
                 break;
             default:
-                Debug.LogWarning("µî·ÏµÇÁö ¾ÊÀº eventId: " + eventId);
+                Debug.LogWarning("ë“±ë¡ë˜ì§€ ì•Šì€ eventId: " + eventId);
                 break;
         }
     }
@@ -303,7 +303,7 @@ public class DialogueSystem : MonoBehaviour
         currentDialogueData = null;
     }
 
-    // hideOnChoiceTarget °¡ ÀÖÀ¸¸é ±×°É, ¾øÀ¸¸é dialogueText ¸¦ Á¦¾î
+    // hideOnChoiceTarget ê°€ ìˆìœ¼ë©´ ê·¸ê±¸, ì—†ìœ¼ë©´ dialogueText ë¥¼ ì œì–´
     private void SetHideTargetActive(bool active)
     {
         if (hideOnChoiceTarget != null)

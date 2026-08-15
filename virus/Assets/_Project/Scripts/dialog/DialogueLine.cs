@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 [System.Serializable]
 public class DialogueLine
@@ -9,7 +9,7 @@ public class DialogueLine
     [TextArea(2, 5)]
     public string text;
 
-    // ±‚¡∏ ChoiceData[]ø°º≠ ∫Ø∞Ê
+    // Í∏∞Ï°¥ ChoiceData[]ÏóêÏÑú Î≥ÄÍ≤Ω
     public DialogueChoiceData[] choices;
 
     public int nextLineIndex = -1;
