@@ -63,10 +63,10 @@ public class ResearchManager : MonoBehaviour
         ResearchStageSO stage = stages[stageIndex];
         enemyIndex++;
 
-        // 단계 안에 적이 더 있으면 다음 적과 전투
+        // 단계 안에 적이 더 있으면 다음 적과 전투. 한 판이 이어지는 거라 약효도 이어진다
         if (enemyIndex < stage.enemies.Length)
         {
-            battleManager.StartBattle(stage.enemies[enemyIndex], OnStageWin, OnStageLose);
+            battleManager.StartBattle(stage.enemies[enemyIndex], OnStageWin, OnStageLose, false, true);
             return;
         }
 

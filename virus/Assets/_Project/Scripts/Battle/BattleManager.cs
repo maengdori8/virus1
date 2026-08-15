@@ -34,7 +34,9 @@ public class BattleManager : MonoBehaviour
 
     private bool useStamina;
 
-    public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback, bool spendStamina = false)
+    // keepBuffs: 같은 판에서 적만 갈리는 연전이면 마시던 약효를 그대로 들고 간다.
+    // 안 그러면 앞 적한테 약을 쓴 순간 보스 앞에서 맨몸이 되는데, 그걸 알 방법이 화면에 없다
+    public void StartBattle(EnemySO enemy, Action winCallback, Action loseCallback, bool spendStamina = false, bool keepBuffs = false)
     {
         currentEnemy = enemy;
         useStamina = spendStamina;
@@ -42,7 +44,7 @@ public class BattleManager : MonoBehaviour
         inBattle = true;
         enemyActionIndex = 0;
         enemyDefendBonus = 0;
-        buffs.Clear();
+        if (!keepBuffs) buffs.Clear();
         onWin = winCallback;
         onLose = loseCallback;
     }
