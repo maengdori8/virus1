@@ -16,6 +16,11 @@ public class ResearchTestRunner : MonoBehaviour
     // 여러 단계를 이어서 보고 싶으면 여기에 넣는다 (비우면 위의 stage, 그것도 없으면 ResearchManager 것)
     public ResearchStageSO[] stages;
 
+    [Header("약 (Q, W 로 사용)")]
+    // 연전에서 앞 적한테 쓴 약효가 다음 적까지 가는지 여기서 본다
+    public ItemSO drugA;
+    public ItemSO drugB;
+
     [Header("설정")]
     public int startSampleCount = 20;
 
@@ -62,7 +67,7 @@ public class ResearchTestRunner : MonoBehaviour
         if (count == 0)
             Debug.LogError("[ResearchTest] 연구 단계가 하나도 없음. stages 를 채울 것");
 
-        Debug.Log("[ResearchTest] 1~3 단계 도전 / Space 공격 / R 다시하기  (등록된 단계 " + count + "개)");
+        Debug.Log("[ResearchTest] 1~3 단계 도전 / Space 공격 / Q,W 약 / R 다시하기  (등록된 단계 " + count + "개)");
     }
 
     private void Update()
@@ -74,6 +79,9 @@ public class ResearchTestRunner : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Alpha3)) Try(2);
 
         if (Input.GetKeyUp(KeyCode.Space)) Attack();
+
+        if (Input.GetKeyUp(KeyCode.Q)) Drink(drugA);
+        if (Input.GetKeyUp(KeyCode.W)) Drink(drugB);
 
         WatchProgress();
         Show();
@@ -138,6 +146,25 @@ public class ResearchTestRunner : MonoBehaviour
             Debug.Log("[ResearchTest] 다음 적 등장: " + battleManager.GetEnemy().enemyName);
     }
 
+    // 인벤토리에 없어도 넣어서 쓴다 (테스트라 편하게)
+    private void Drink(ItemSO drug)
+    {
+        if (drug == null) return;
+
+        if (!battleManager.InBattle())
+        {
+            Debug.Log("[ResearchTest] 전투 중이 아님");
+            return;
+        }
+
+        GameState state = researchManager.gameState;
+        if (!state.itemInventory.Contains(drug)) state.itemInventory.Add(drug);
+
+        battleManager.UseDrug(drug);
+        Debug.Log("[ResearchTest] " + drug.itemName + " 사용. 공+" + battleManager.GetBuffAttack() +
+                  " 방+" + battleManager.GetBuffDefense() + " (" + battleManager.GetBuffTurns() + "턴)");
+    }
+
     // 진행도가 오르면 보상이 들어온 것
     private void WatchProgress()
     {
@@ -166,6 +193,11 @@ public class ResearchTestRunner : MonoBehaviour
         {
             EnemySO e = battleManager.GetEnemy();
             line += "\n전투: " + e.enemyName + "  " + battleManager.GetEnemyHp() + "/" + e.hp.max;
+
+            if (battleManager.GetBuffTurns() > 0)
+                line += "\n약효 공+" + battleManager.GetBuffAttack() +
+                        " 방+" + battleManager.GetBuffDefense() +
+                        " (" + battleManager.GetBuffTurns() + "턴)";
         }
 
         infoText.text = line;

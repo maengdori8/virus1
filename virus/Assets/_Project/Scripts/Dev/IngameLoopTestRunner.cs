@@ -69,6 +69,7 @@ public class IngameLoopTestRunner : MonoBehaviour
 
         Debug.Log("[" + label + "] 남은날 " + gameState.time.dayTurn +
                   " 턴 " + gameState.time.timeTurn + "/" + gameState.time.maxTimeTurn +
+                  (Dazed() ? " [혼미]" : "") +
                   (diff == "" ? "  (변화 없음)" : "  " + diff));
 
         Snapshot();
@@ -79,6 +80,14 @@ public class IngameLoopTestRunner : MonoBehaviour
         if (before == now) return "";
 
         return name + " " + before + "→" + now + " (" + (now - before >= 0 ? "+" : "") + (now - before) + ")  ";
+    }
+
+    // 혼미면 자연 회복이 멈추므로 하루 계산이 달라진다. 그게 안 보이면 수치를 못 읽는다
+    private bool Dazed()
+    {
+        return gameManager != null
+            && gameManager.consciousnessManager != null
+            && gameManager.consciousnessManager.IsLow();
     }
 
     private void Snapshot()
@@ -97,7 +106,8 @@ public class IngameLoopTestRunner : MonoBehaviour
             "남은날 " + gameState.time.dayTurn + "  턴 " + gameState.time.timeTurn + "/" + gameState.time.maxTimeTurn +
             "  경과 " + gameState.currentDay + "일\n" +
             "체력 " + gameState.hp.current + "/" + gameState.hp.max +
-            "  물자 " + gameState.supply.current + "  의식 " + gameState.consciousness + "\n" +
+            "  물자 " + gameState.supply.current +
+            "  의식 " + gameState.consciousness + (Dazed() ? " (혼미)" : "") + "\n" +
             "백신 " + gameState.vaccineProgress + "%";
     }
 }

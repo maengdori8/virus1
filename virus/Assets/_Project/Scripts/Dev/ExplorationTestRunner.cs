@@ -89,7 +89,10 @@ public class ExplorationTestRunner : MonoBehaviour
         current = explorationManager.GetRandomEvent();
         if (current == null) return;
 
+        int deeperCost = explorationManager.GetDeeperCost();
+
         string line = "깊이 " + explorationManager.GetDepth() +
+                      (deeperCost > 0 ? " (더 들어가기 " + deeperCost + ")" : " (제일 안쪽)") +
                       " / 스태미나 " + explorationManager.gameState.stamina.current +
                       "\n" + current.description;
 
@@ -129,7 +132,13 @@ public class ExplorationTestRunner : MonoBehaviour
     {
         if (!Active()) return;
 
-        explorationManager.GoDeeper();
+        // 제일 안쪽이면 안 들어가진다. 그때 새로 뽑으면 공짜로 이벤트만 바꾸는 셈
+        if (!explorationManager.GoDeeper())
+        {
+            Debug.Log("[ExplorationTest] 더 못 들어감 (제일 안쪽이거나 스태미나 없음)");
+            return;
+        }
+
         Draw();
     }
 
