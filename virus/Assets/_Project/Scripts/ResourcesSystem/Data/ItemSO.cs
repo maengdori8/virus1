@@ -14,6 +14,9 @@ public class ItemSO : ScriptableObject
     // 설명
     public string description;
 
+    // 인벤토리 칸에 띄울 그림
+    public Sprite icon;
+
     [Header("효과")]
     // 사용 효과
     public ActionData effect;
