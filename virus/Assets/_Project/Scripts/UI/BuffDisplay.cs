@@ -45,10 +45,10 @@ public class BuffDisplay : MonoBehaviour
             tintTarget.color = attack >= defense ? attackColor : defenseColor;
     }
 
-    // 버프 종류 문구
+    // 버프 종류 문구. 두 약을 같이 마셨으면 둘 다 보여준다
     private string Label(int attack, int defense)
     {
-        if (attack > 0 && defense > 0) return "약효";
+        if (attack > 0 && defense > 0) return "공격 +" + attack + " 방어 +" + defense;
         if (attack > 0) return "공격 +" + attack;
         return "방어 +" + defense;
     }
