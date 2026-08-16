@@ -45,6 +45,24 @@ public class BattleUI : MonoBehaviour
         battleManager.PlayerAttack();
     }
 
+    // 방어 버튼에 연결. 이번 적 공격 피해를 깎는다
+    public void OnClickDefend()
+    {
+        battleManager.PlayerDefend();
+    }
+
+    // 회피 버튼에 연결. 확률로 이번 적 공격을 통째로 흘린다
+    public void OnClickDodge()
+    {
+        battleManager.PlayerDodge();
+    }
+
+    // 도주 버튼에 연결. 그 자리에서 전투를 끝낸다
+    public void OnClickFlee()
+    {
+        battleManager.Flee();
+    }
+
     // 약 사용 버튼에 연결. 인벤토리의 첫 번째 약 사용
     public void OnClickDrug()
     {
