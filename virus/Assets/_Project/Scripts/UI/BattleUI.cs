@@ -11,6 +11,9 @@ public class BattleUI : MonoBehaviour
     [Header("패널")]
     public GameObject panel;
 
+    // 전투 중에만 같이 켤 것. 연구 씬의 전투 배경처럼 패널 밖에 있는 것들
+    public GameObject[] battleOnly;
+
     [Header("표시")]
     // 적 이름
     public TextMeshProUGUI enemyNameText;
@@ -27,6 +30,12 @@ public class BattleUI : MonoBehaviour
         bool active = battleManager.InBattle();
         if (panel.activeSelf != active)
             panel.SetActive(active);
+
+        for (int i = 0; i < battleOnly.Length; i++)
+        {
+            if (battleOnly[i] == null) continue;
+            if (battleOnly[i].activeSelf != active) battleOnly[i].SetActive(active);
+        }
 
         if (!active) return;
 
