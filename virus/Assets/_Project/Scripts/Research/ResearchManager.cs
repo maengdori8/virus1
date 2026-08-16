@@ -30,7 +30,11 @@ public class ResearchManager : MonoBehaviour
     // 샘플 충분한지 확인. sampleCost와 보유량 비교
     public bool CanStartStage(ResearchStageSO stage)
     {
-        for (int i = 0; i < 3; i++)
+        if (stage == null || stage.sampleCost == null) return false;
+
+        int count = Mathf.Min(stage.sampleCost.Length, gameState.sampleInventory.Length);
+
+        for (int i = 0; i < count; i++)
         {
             if (gameState.sampleInventory[i] < stage.sampleCost[i])
                 return false;
@@ -42,14 +46,18 @@ public class ResearchManager : MonoBehaviour
     public void StartStage(int index)
     {
         // 잘못된 인덱스 / 빈 단계 / 잠긴 단계 방어
-        if (index < 0 || index >= stages.Length) return;
+        if (stages == null || index < 0 || index >= stages.Length) return;
         if (!IsStageUnlocked(index)) return;
+
+        // 전투 중에 또 들어오면 샘플만 한 번 더 깎이고 진행 중인 전투가 덮어써진다
+        if (battleManager.InBattle()) return;
 
         ResearchStageSO stage = stages[index];
         if (stage == null || stage.enemies == null || stage.enemies.Length == 0) return;
         if (!CanStartStage(stage)) return;
 
-        for (int i = 0; i < 3; i++)
+        int costCount = Mathf.Min(stage.sampleCost.Length, gameState.sampleInventory.Length);
+        for (int i = 0; i < costCount; i++)
             gameState.sampleInventory[i] -= stage.sampleCost[i];
 
         stageIndex = index;
