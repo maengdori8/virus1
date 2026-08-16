@@ -10,6 +10,9 @@ public class RankManager : MonoBehaviour
     [Header("랭킹")]
     // 랭킹 리스트
     public List<RankData> rankList = new List<RankData>();
+
+    // 남겨둘 기록 수 (0이면 제한 없음)
+    public int maxRecords = 10;
     private const string SaveKey = "RankData";
 
 
@@ -19,12 +22,23 @@ public class RankManager : MonoBehaviour
     // 클리어 시 이름과 일수를 rankList에 추가. 일수 기준 오름차순 정렬
     public void AddRank(string playerName)
     {
+        // 이름을 넣는 건 연구 씬의 RankManager 인데 저장된 기록을 읽은 적이 없는 놈이다.
+        // 그대로 저장하면 이번 판 하나만 남고 예전 기록이 전부 날아간다
+        Load();
+
+        string trimmed = playerName == null ? "" : playerName.Trim();
+
         RankData newRank = new RankData();
-        newRank.playerName = playerName;
+        newRank.playerName = trimmed.Length == 0 ? "이름없음" : trimmed;
         newRank.clearDay = gameState.currentDay;
 
         rankList.Add(newRank);
         rankList.Sort((a, b) => a.clearDay.CompareTo(b.clearDay));
+
+        // 계속 쌓이기만 하면 저장값이 끝없이 길어진다. 빠른 순으로 남긴다
+        if (maxRecords > 0 && rankList.Count > maxRecords)
+            rankList.RemoveRange(maxRecords, rankList.Count - maxRecords);
+
         Save();
     }
 
