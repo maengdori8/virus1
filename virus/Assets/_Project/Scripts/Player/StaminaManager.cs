@@ -21,14 +21,16 @@ public class StaminaManager : MonoBehaviour
 
         gameState.stamina.current -= amount;
 
-        if (gameState.stamina.current <= 0 && !penaltyApplied)
-        {
-            gameState.stamina.current = 0;
-            ApplyPenalty();
-            penaltyApplied = true;
-            return true;
-        }
-        return false;
+        if (gameState.stamina.current > 0) return false;
+
+        // 남은 양보다 큰 값을 쓰면 음수가 된다. 게이지가 뒤집히니 0에서 끊는다
+        gameState.stamina.current = 0;
+
+        if (penaltyApplied) return false;
+
+        ApplyPenalty();
+        penaltyApplied = true;
+        return true;
     }
 
     // 스태미나 회복 (턴 낭비 / 휴식)

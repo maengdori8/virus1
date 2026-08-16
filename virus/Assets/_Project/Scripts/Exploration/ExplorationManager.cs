@@ -13,11 +13,11 @@ public class ExplorationManager : MonoBehaviour
 
     [Header("휴식")]
     // 턴 낭비 시 회복할 스태미나
-    public int restStaminaGain = 3;
+    public int restStaminaGain = 30;
 
     [Header("깊이")]
-    // 안쪽으로 한 번 들어갈 때 드는 스태미나. 깊이에 비례해서 늘어난다 (1, 2, 3…)
-    public int deeperStaminaCost = 1;
+    // 안쪽으로 한 번 들어갈 때 드는 스태미나. 깊이에 비례해서 늘어난다 (10, 20, 30…)
+    public int deeperStaminaCost = 10;
 
     // 더 들어갈 수 있는 최대 깊이
     public int maxDepth = 3;

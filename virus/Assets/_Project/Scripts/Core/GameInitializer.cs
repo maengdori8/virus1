@@ -12,7 +12,7 @@ public class GameInitializer : MonoBehaviour
     public int startDailyHeal = 5;
 
     [Header("스태미나 초기값")]
-    public int startMaxStamina = 10;
+    public int startMaxStamina = 120;
 
     [Header("물자 초기값")]
     public int startSupply = 20;

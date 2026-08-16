@@ -8,9 +8,14 @@ public class ResearchManager : MonoBehaviour
     public BattleManager battleManager;
     public GameManager gameManager;
     public ConsciousnessManager consciousnessManager;
+    public StaminaManager staminaManager;
 
     [Header("연구 단계 (순서대로 1→2→3)")]
     public ResearchStageSO[] stages;
+
+    [Header("입장 비용")]
+    // 단계에 들어갈 때 한 번만 나간다. 벙커 안이라 전투 중 행동은 스태미나를 쓰지 않는다
+    public int enterStaminaCost = 20;
 
     private int stageIndex;   // 현재 도전 중인 단계
     private int enemyIndex;   // 단계 내 현재 적
@@ -59,6 +64,9 @@ public class ResearchManager : MonoBehaviour
         int costCount = Mathf.Min(stage.sampleCost.Length, gameState.sampleInventory.Length);
         for (int i = 0; i < costCount; i++)
             gameState.sampleInventory[i] -= stage.sampleCost[i];
+
+        // 입장할 때만 소모. 전투가 길어져도 더 나가지 않는다
+        if (staminaManager != null) staminaManager.Spend(enterStaminaCost);
 
         stageIndex = index;
         enemyIndex = 0;
