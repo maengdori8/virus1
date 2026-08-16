@@ -22,11 +22,17 @@ public class RewardManager : MonoBehaviour
         gameState.vaccineProgress = Mathf.Clamp(gameState.vaccineProgress, 0, 100);
         gameState.consciousness = Mathf.Clamp(gameState.consciousness, 0, 100);
 
-        // 보유 샘플 더하거나 차감 (음수 방지)
-        for (int i = 0; i < 3; i++)
+        // 보유 샘플 더하거나 차감 (음수 방지).
+        // 인스펙터에서 새로 만든 선택지는 sampleChange 가 빈 배열이라 길이를 믿으면 안 된다
+        if (reward.sampleChange != null)
         {
-            gameState.sampleInventory[i] += reward.sampleChange[i];
-            gameState.sampleInventory[i] = Mathf.Max(gameState.sampleInventory[i], 0);
+            int count = Mathf.Min(reward.sampleChange.Length, gameState.sampleInventory.Length);
+
+            for (int i = 0; i < count; i++)
+            {
+                gameState.sampleInventory[i] += reward.sampleChange[i];
+                gameState.sampleInventory[i] = Mathf.Max(gameState.sampleInventory[i], 0);
+            }
         }
 
         // 획득 아이템 인벤토리에 추가
