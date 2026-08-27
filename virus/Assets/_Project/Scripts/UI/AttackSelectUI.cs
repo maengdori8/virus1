@@ -15,6 +15,9 @@ public class AttackSelectUI : MonoBehaviour
     // 고를 수 있는 공격. 넣은 순서대로 칸이 생긴다
     public AttackSO[] attacks;
 
+    // 칸 왼쪽에 붙는 속성 그림. ElementType 순서대로 목 화 토 금 수
+    public Sprite[] elementIcons = new Sprite[0];
+
     [Header("방어")]
     // 방어 버튼을 눌렀을 때 뜨는 두 칸의 이름
     public string dodgeName = "회피";
@@ -56,8 +59,7 @@ public class AttackSelectUI : MonoBehaviour
             // i 를 그대로 넘기면 칸이 눌릴 때는 이미 마지막 값이라 따로 받아둔다
             int index = i;
 
-            AddSlot(attacks[i].attackName + " (" + ElementName.Of(attacks[i].element) + ")",
-                    () => OnClickAttack(index));
+            AddSlot(attacks[i].attackName, IconOf(attacks[i].element), () => OnClickAttack(index));
         }
 
         SetCommandsActive(false);
@@ -70,8 +72,9 @@ public class AttackSelectUI : MonoBehaviour
 
         ClearSlots();
 
-        AddSlot(dodgeName, OnClickDodge);
-        AddSlot(defendName, OnClickDefend);
+        // 회피·방어는 속성이 없으니 그림 자리는 비운다
+        AddSlot(dodgeName, null, OnClickDodge);
+        AddSlot(defendName, null, OnClickDefend);
 
         SetCommandsActive(false);
     }
@@ -127,7 +130,17 @@ public class AttackSelectUI : MonoBehaviour
         commandButtons.SetActive(active);
     }
 
-    private void AddSlot(string label, UnityEngine.Events.UnityAction onClick)
+    // 속성 그림. 넣어둔 게 없으면 null 이라 그림 자리가 감춰진다
+    private Sprite IconOf(ElementType element)
+    {
+        int index = (int)element;
+
+        if (elementIcons == null || index < 0 || index >= elementIcons.Length) return null;
+
+        return elementIcons[index];
+    }
+
+    private void AddSlot(string label, Sprite icon, UnityEngine.Events.UnityAction onClick)
     {
         GameObject slot = Instantiate(slotPrefab, slotParent);
         slots.Add(slot);
@@ -135,7 +148,24 @@ public class AttackSelectUI : MonoBehaviour
         TextMeshProUGUI text = slot.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null) text.text = label;
 
+        SetIcon(slot, icon);
+
         Button button = slot.GetComponentInChildren<Button>();
         if (button != null) button.onClick.AddListener(onClick);
+    }
+
+    // 프리팹 안의 그림 자리에 속성 그림을 넣는다
+    private void SetIcon(GameObject slot, Sprite icon)
+    {
+        Transform place = slot.transform.Find("Image");
+        if (place == null) return;
+
+        Image image = place.GetComponent<Image>();
+        if (image == null) return;
+
+        image.sprite = icon;
+
+        // 그림이 없으면 흰 네모만 남으니 아예 감춘다
+        image.enabled = icon != null;
     }
 }
