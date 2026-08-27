@@ -14,7 +14,7 @@ public class BattleSceneLoader : MonoBehaviour
 
     [Header("같이 켤 것")]
     // 전투 중에만 켤 이 씬 오브젝트. 연구 씬의 전투 배경처럼 화면을 덮을 것들
-    public GameObject[] battleOnly;
+    public GameObject[] battleOnly = new GameObject[0];
 
     // 지금 얹혀 있는지
     private bool loaded;

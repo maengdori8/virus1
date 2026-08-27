@@ -12,7 +12,7 @@ public class BattleUI : MonoBehaviour
     public GameObject panel;
 
     // 전투 중에만 같이 켤 것. 연구 씬의 전투 배경처럼 패널 밖에 있는 것들
-    public GameObject[] battleOnly;
+    public GameObject[] battleOnly = new GameObject[0];
 
     [Header("표시")]
     // 적 이름
