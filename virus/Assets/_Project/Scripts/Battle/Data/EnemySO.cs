@@ -11,6 +11,9 @@ public class EnemySO : ScriptableObject
     // 오행 속성
     public ElementType element;
 
+    // 전투 화면에 뜨는 그림
+    public Sprite portrait;
+
     [Header("스탯")]
     // 체력
     public HpData hp;

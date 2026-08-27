@@ -8,6 +8,9 @@ public class EventSO : ScriptableObject
     // 이벤트 설명
     public string description;
 
+    // 이벤트 성격 그림 (평범/위험/행운/수상)
+    public Sprite tagIcon;
+
     // 선택지 목록
     public ChoiceData[] choices;
 

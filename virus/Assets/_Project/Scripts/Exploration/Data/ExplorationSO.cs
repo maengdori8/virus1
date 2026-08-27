@@ -11,6 +11,9 @@ public class ExplorationSO : ScriptableObject
     // 오행 속성
     public ElementType element;
 
+    // 지역 선택 화면에 뜨는 그림
+    public Sprite icon;
+
     [Header("탐사 설정")]
     // 탐사 스태미나 한도
     public int staminaLimit;
