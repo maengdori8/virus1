@@ -137,15 +137,36 @@ public class GameManager : MonoBehaviour
         resultReason = "백신 완성";
         Debug.Log("백신 완성");
 
+        // 엔딩을 틀 곳이 있으면 이름은 엔딩이 끝난 뒤에 받는다
+        if (FindObjectOfType<EndingUI>() != null) return;
+
+        AskPlayerName();
+    }
+
+    // 엔딩이 끝나면 호출 (StoryUI.onClosed 에 연결). 대화창으로 이름을 받는다
+    public void AskPlayerName()
+    {
+        if (DialogueSystem.Instance != null)
+        {
+            DialogueSystem.Instance.AskName("", "백신이 완성됐다. 기록에 남길 이름을 적어라.", SaveRank);
+            return;
+        }
+
         if (namePanel != null) namePanel.SetActive(true);
     }
 
     // 확인 버튼에 연결. 입력한 이름으로 랭킹 저장
     public void OnSubmitName()
     {
-        rankManager.AddRank(nameInput != null ? nameInput.text : "");
-
         if (namePanel != null) namePanel.SetActive(false);
+
+        SaveRank(nameInput != null ? nameInput.text : "");
+    }
+
+    // 이름을 받은 뒤 랭킹에 넣고 로비로
+    private void SaveRank(string playerName)
+    {
+        rankManager.AddRank(playerName);
 
         // 판이 끝났으니 로비로. 다음 입장 때 새 게임으로 시작된다
         IngameBootstrap.ResetRun();

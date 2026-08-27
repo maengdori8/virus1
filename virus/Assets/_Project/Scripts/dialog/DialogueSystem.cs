@@ -20,6 +20,11 @@ public class DialogueSystem : MonoBehaviour
     [Header("대사 출력 설정")]
     [SerializeField] private float typingSpeed = 0.04f;
 
+    [Header("이름 입력")]
+    [Tooltip("대화창 안의 이름 입력 묶음. 평소에는 꺼둔다")]
+    [SerializeField] private GameObject nameInputRoot;
+    [SerializeField] private TMP_InputField nameInputField;
+
     [Header("선택지 설정")]
     [Tooltip("선택지 표시 시 숨길 GameObject (null 이면 dialogueText 사용)")]
     [SerializeField] private GameObject hideOnChoiceTarget;
@@ -28,6 +33,8 @@ public class DialogueSystem : MonoBehaviour
     private int currentLineIndex;
     private bool isTyping;
     private bool isWaitingForChoice;
+    private bool isAskingName;
+    private System.Action<string> onNameSubmit;
     private string fullText;
     private Coroutine typingCoroutine;
 
@@ -53,6 +60,10 @@ public class DialogueSystem : MonoBehaviour
     private void Update()
     {
         if (!dialoguePanel.activeSelf)
+            return;
+
+        // 이름을 받는 중에는 스페이스가 대화 넘김이 아니라 글자 입력이다
+        if (isAskingName)
             return;
 
         if (Input.GetKeyDown(KeyCode.Space) ||
@@ -314,5 +325,53 @@ public class DialogueSystem : MonoBehaviour
         {
             dialogueText.gameObject.SetActive(active);
         }
+    }
+
+    // 대화창을 그대로 써서 이름을 받는다. 확인 버튼에 SubmitName 을 걸어두면 된다
+    public void AskName(string speaker, string message, System.Action<string> onSubmit)
+    {
+        if (nameInputRoot == null || nameInputField == null)
+        {
+            Debug.LogWarning("대화창에 이름 입력 칸이 없습니다.");
+            return;
+        }
+
+        onNameSubmit = onSubmit;
+        isAskingName = true;
+
+        currentDialogueData = null;
+        ClearChoiceButtons();
+        SetHideTargetActive(true);
+
+        dialoguePanel.SetActive(true);
+        speakerFaceImage.sprite = null;
+        speakerNameText.text = speaker;
+
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        dialogueText.text = message;
+        isTyping = false;
+
+        nameInputRoot.SetActive(true);
+        nameInputField.text = "";
+        nameInputField.ActivateInputField();
+    }
+
+    // 이름 입력칸 옆 확인 버튼에 연결
+    public void SubmitName()
+    {
+        if (!isAskingName) return;
+
+        string entered = nameInputField != null ? nameInputField.text : "";
+
+        isAskingName = false;
+        if (nameInputRoot != null) nameInputRoot.SetActive(false);
+        dialoguePanel.SetActive(false);
+
+        System.Action<string> callback = onNameSubmit;
+        onNameSubmit = null;
+
+        if (callback != null) callback(entered);
     }
 }

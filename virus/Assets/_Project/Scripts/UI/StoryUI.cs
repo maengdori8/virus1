@@ -32,6 +32,9 @@ public class StoryUI : MonoBehaviour
     // 다 넘긴 뒤 켤 패널 (없으면 비워둠)
     public GameObject nextPanel;
 
+    // 다 넘긴 뒤 부를 것 (패널 대신 다른 걸 띄울 때)
+    public UnityEngine.Events.UnityEvent onClosed;
+
     // 이번 판에 인트로를 봤는지
     private static bool introShown;
 
@@ -94,6 +97,8 @@ public class StoryUI : MonoBehaviour
     {
         if (panel != null) panel.SetActive(false);
         if (nextPanel != null) nextPanel.SetActive(true);
+
+        if (onClosed != null) onClosed.Invoke();
     }
 
     // 로비로 나갈 때 호출. 다음 판에 인트로 다시 보여줌
