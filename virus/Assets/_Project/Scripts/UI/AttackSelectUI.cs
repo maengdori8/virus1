@@ -23,6 +23,9 @@ public class AttackSelectUI : MonoBehaviour
     public string dodgeName = "회피";
     public string defendName = "방어";
 
+    // 목록 맨 뒤에 붙는 취소 칸. 아무것도 안 하고 도로 닫는다
+    public string backName = "뒤로";
+
     [Header("칸")]
     // 한 칸짜리 프리팹 (Selectable). 루트에 Button 이 있어야 눌린다
     public GameObject slotPrefab;
@@ -62,6 +65,7 @@ public class AttackSelectUI : MonoBehaviour
             AddSlot(attacks[i].attackName, IconOf(attacks[i].element), () => OnClickAttack(index));
         }
 
+        AddSlot(backName, null, Close);
         SetCommandsActive(false);
     }
 
@@ -75,6 +79,7 @@ public class AttackSelectUI : MonoBehaviour
         // 회피·방어는 속성이 없으니 그림 자리는 비운다
         AddSlot(dodgeName, null, OnClickDodge);
         AddSlot(defendName, null, OnClickDefend);
+        AddSlot(backName, null, Close);
 
         SetCommandsActive(false);
     }

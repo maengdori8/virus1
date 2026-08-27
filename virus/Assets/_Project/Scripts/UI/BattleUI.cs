@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 // 전투 패널 표시/조작
@@ -20,6 +21,12 @@ public class BattleUI : MonoBehaviour
 
     // 적 체력
     public TextMeshProUGUI enemyHpText;
+
+    // 적 체력 막대. 남은 비율만큼 채운다
+    public Image enemyHpFill;
+
+    // 적 그림. 그림이 없는 적이면 감춘다
+    public Image enemyPortrait;
 
     // 적 다음 행동 예고
     public TextMeshProUGUI nextActionText;
@@ -43,7 +50,21 @@ public class BattleUI : MonoBehaviour
 
         // 속성을 안 보여주면 상성이 그냥 랜덤으로 느껴진다
         enemyNameText.text = enemy.enemyName + " (" + ElementName.Of(enemy.element) + ")";
-        enemyHpText.text = battleManager.GetEnemyHp() + " / " + enemy.hp.max;
+
+        if (enemyPortrait != null)
+        {
+            enemyPortrait.sprite = enemy.portrait;
+            enemyPortrait.enabled = enemy.portrait != null;
+        }
+
+        int hp = battleManager.GetEnemyHp();
+        if (hp < 0) hp = 0;
+
+        enemyHpText.text = hp + " / " + enemy.hp.max;
+
+        if (enemyHpFill != null && enemy.hp.max > 0)
+            enemyHpFill.fillAmount = (float)hp / enemy.hp.max;
+
         nextActionText.text = "다음 행동: " + ActionLabel(battleManager.GetNextEnemyAction())
                               + "    내 속성 " + ElementName.Of(gameState.battle.element);
     }
